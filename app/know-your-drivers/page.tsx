@@ -5,6 +5,7 @@ import Nav from "@/components/Nav";
 import AuthModal from "@/components/AuthModal";
 import { DRIVERS, Driver } from "@/data/drivers";
 import Link from "next/link";
+import { Gauge, Zap, Flag, Cloud, RotateCw, TrendingUp, Trophy, Calendar } from "@/components/Icons";
 
 const ERAS = [
   { key: "all", label: "All Eras" },
@@ -17,13 +18,13 @@ const ERAS = [
   { key: "modern", label: "Modern Era" },
 ];
 
-const ATTRS: [keyof Driver, string, string][] = [
-  ["pace", "🏎", "Pace"],
-  ["quali", "⚡", "Qualifying"],
-  ["racecraft", "🏁", "Racecraft"],
-  ["wet", "☁️", "Wet"],
-  ["tyres", "🛞", "Tyres"],
-  ["consistency", "🚩", "Consistency"],
+const ATTRS: [keyof Driver, React.ElementType, string][] = [
+  ["pace",        Gauge,      "Pace"],
+  ["quali",       Zap,        "Qualifying"],
+  ["racecraft",   Flag,       "Racecraft"],
+  ["wet",         Cloud,      "Wet"],
+  ["tyres",       RotateCw,   "Tyres"],
+  ["consistency", TrendingUp, "Consistency"],
 ];
 
 function statColor(v: number) {
@@ -80,13 +81,13 @@ export default function KnowYourDriversPage() {
             {/* Pills */}
             <div style={{ display: "flex", gap: 10, padding: "16px 24px", flexWrap: "wrap" }}>
               {[
-                { icon: "🏆", val: selected.titles, lbl: "Titles" },
-                { icon: "🏁", val: selected.wins, lbl: "Wins" },
-                { icon: "⚡", val: selected.poles, lbl: "Poles" },
-                { icon: "📅", val: selected.peak, lbl: "Peak" },
+                { Icon: Trophy,   val: selected.titles, lbl: "Titles" },
+                { Icon: Flag,     val: selected.wins,   lbl: "Wins" },
+                { Icon: Zap,      val: selected.poles,  lbl: "Poles" },
+                { Icon: Calendar, val: selected.peak,   lbl: "Peak" },
               ].map(p => (
                 <div key={p.lbl} style={{ display: "flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 14, padding: "8px 14px", flex: "0 0 auto" }}>
-                  <span style={{ fontSize: 16 }}>{p.icon}</span>
+                  <p.Icon size={14} strokeWidth={2} style={{ color: "rgba(0,200,180,0.7)", flexShrink: 0 }} />
                   <div>
                     <div style={{ fontFamily: "var(--font-archivo-narrow)", fontWeight: 800, fontSize: 18, color: "#fff", lineHeight: 1 }}>{p.val}</div>
                     <div style={{ fontFamily: "var(--font-jetbrains)", fontSize: 9, color: "rgba(255,255,255,0.4)", letterSpacing: "0.1em", textTransform: "uppercase" }}>{p.lbl}</div>
@@ -99,12 +100,12 @@ export default function KnowYourDriversPage() {
             <div style={{ padding: "0 24px 24px" }}>
               <SectionTitle>Performance Ratings</SectionTitle>
               <div style={{ display: "grid", gap: 8, marginBottom: 20 }}>
-                {ATTRS.map(([attr, icon, lbl]) => {
+                {ATTRS.map(([attr, AttrIcon, lbl]) => {
                   const v = selected[attr] as number;
                   const pct = ((v - 70) / 30 * 100).toFixed(1);
                   return (
                     <div key={lbl} style={{ display: "grid", gridTemplateColumns: "20px 90px 1fr 32px", alignItems: "center", gap: 8 }}>
-                      <span style={{ fontSize: 13, textAlign: "center" }}>{icon}</span>
+                      <AttrIcon size={12} strokeWidth={2} style={{ color: "rgba(0,200,180,0.55)" }} />
                       <span style={{ fontFamily: "var(--font-jetbrains)", fontWeight: 700, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(255,255,255,0.6)" }}>{lbl}</span>
                       <div style={{ height: 12, background: "rgba(0,0,0,0.3)", borderRadius: 99, overflow: "hidden", border: "1.5px solid rgba(255,255,255,0.08)" }}>
                         <div className={statColor(v)} style={{ height: "100%", borderRadius: 99, width: pct + "%" }} />
@@ -193,7 +194,7 @@ export default function KnowYourDriversPage() {
                   </div>
                   <div style={{ fontFamily: "var(--font-jetbrains)", fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(0,200,180,0.7)", marginBottom: 6 }}>{drv.team.split("·")[0].trim()}</div>
                   <div style={{ fontFamily: "var(--font-jetbrains)", fontSize: 9, color: "rgba(255,255,255,0.45)", letterSpacing: "0.06em" }}>
-                    {drv.titles > 0 ? `🏆 ${drv.titles} Championship${drv.titles > 1 ? "s" : ""}` : `🎯 ${drv.wins} Race Wins`}
+                    {drv.titles > 0 ? `${drv.titles} Championship${drv.titles > 1 ? "s" : ""}` : `${drv.wins} Race Wins`}
                   </div>
                   <div style={{ fontFamily: "var(--font-jetbrains)", fontSize: 8, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(255,255,255,0.25)", marginTop: 4 }}>{drv.era.toUpperCase()} · {drv.peak}</div>
                 </div>

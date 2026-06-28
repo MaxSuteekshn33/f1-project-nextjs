@@ -6,6 +6,7 @@ import AuthModal from "@/components/AuthModal";
 import { GOAT_DRIVERS, Driver } from "@/data/drivers";
 import { useSimulation } from "@/lib/useSimulation";
 import { QUIZ_QUESTIONS } from "@/data/quiz";
+import { Gauge, Zap, Flag, Cloud, RotateCw, TrendingUp, RefreshCw, Trophy, Lock, Target, BookOpen, X, CheckCircle2 } from "@/components/Icons";
 
 type WeatherKey = "dry" | "damp" | "wet";
 
@@ -69,13 +70,13 @@ function valColor(v: number): string {
   return "#f87171";
 }
 
-const ATTRS: [keyof Driver, string, string][] = [
-  ["pace", "🏎", "Pace"],
-  ["quali", "⚡", "Qualifying"],
-  ["racecraft", "🏁", "Racecraft"],
-  ["wet", "☁️", "Wet"],
-  ["tyres", "🛞", "Tyres"],
-  ["consistency", "🚩", "Consistency"],
+const ATTRS: [keyof Driver, React.ElementType, string][] = [
+  ["pace",        Gauge,       "Pace"],
+  ["quali",       Zap,         "Qualifying"],
+  ["racecraft",   Flag,        "Racecraft"],
+  ["wet",         Cloud,       "Wet"],
+  ["tyres",       RotateCw,    "Tyres"],
+  ["consistency", TrendingUp,  "Consistency"],
 ];
 
 /* ─── Quiz Modal ─────────────────────────────────────────── */
@@ -115,7 +116,9 @@ function QuizModal({ onClose, onPass }: { onClose: () => void; onPass: () => voi
         maxWidth: 560, width: "100%", padding: 36, position: "relative",
         boxShadow: "0 24px 80px rgba(0,0,0,0.7), 0 0 40px rgba(0,200,180,0.1)",
       }}>
-        <button onClick={onClose} style={{ position: "absolute", top: 14, right: 14, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", color: "#fff", borderRadius: "50%", width: 32, height: 32, cursor: "pointer", fontSize: 14 }}>✕</button>
+        <button onClick={onClose} style={{ position: "absolute", top: 14, right: 14, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", color: "#fff", borderRadius: "50%", width: 32, height: 32, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <X size={14} strokeWidth={2} />
+        </button>
 
         {!done ? (
           <>
@@ -149,7 +152,14 @@ function QuizModal({ onClose, onPass }: { onClose: () => void; onPass: () => voi
           </>
         ) : (
           <div style={{ textAlign: "center" }}>
-            <div style={{ fontSize: 48, marginBottom: 12 }}>{score >= 7 ? "🏆" : score >= 5 ? "🎯" : "📚"}</div>
+            <div style={{ marginBottom: 16 }}>
+              {score >= 7
+                ? <Trophy size={44} strokeWidth={1.5} style={{ color: "#fcd34d" }} />
+                : score >= 5
+                  ? <Target size={44} strokeWidth={1.5} style={{ color: "#00c8b4" }} />
+                  : <BookOpen size={44} strokeWidth={1.5} style={{ color: "rgba(255,255,255,0.4)" }} />
+              }
+            </div>
             <div style={{ fontFamily: "var(--font-archivo)", fontWeight: 900, fontSize: 28, color: "#fff", marginBottom: 8 }}>
               {score} / {total}
             </div>
@@ -185,7 +195,7 @@ function LockModal({ driver, runsLeft, onClose }: { driver: Driver; runsLeft: nu
         maxWidth: 420, width: "100%", padding: 36, textAlign: "center",
         boxShadow: "0 24px 80px rgba(0,0,0,0.7), 0 0 40px rgba(232,48,58,0.1)",
       }}>
-        <div style={{ fontSize: 48, marginBottom: 16 }}>🔒</div>
+        <div style={{ marginBottom: 16 }}><Lock size={44} strokeWidth={1.5} style={{ color: "rgba(232,48,58,0.7)" }} /></div>
         <div style={{ fontFamily: "var(--font-archivo)", fontWeight: 900, fontSize: 26, color: "#fff", marginBottom: 8 }}>{driver.name}</div>
         <div style={{ fontFamily: "var(--font-saira)", color: "rgba(255,255,255,0.55)", fontSize: 14, marginBottom: 24, lineHeight: 1.6 }}>
           This driver is locked. Run <span style={{ color: "#00c8b4", fontWeight: 700 }}>{runsLeft} more simulation{runsLeft !== 1 ? "s" : ""}</span> to unlock {driver.name.split(" ")[0]}.
@@ -320,7 +330,7 @@ function DriverPick({
 
       {/* Stat bars with rationale tooltip */}
       <div style={{ display: "grid", gap: 7 }}>
-        {ATTRS.map(([attr, icon, lbl]) => {
+        {ATTRS.map(([attr, AttrIcon, lbl]) => {
           const v = driver[attr] as number;
           const pct = ((v - 70) / 30 * 100).toFixed(1);
           const rationale = driver.rationale?.[attr as string];
@@ -329,11 +339,11 @@ function DriverPick({
           return (
             <div key={lbl} style={{ position: "relative" }}>
               <div
-                style={{ display: "grid", gridTemplateColumns: "22px 46px 1fr 32px", alignItems: "center", gap: 6, cursor: rationale ? "help" : "default" }}
+                style={{ display: "grid", gridTemplateColumns: "18px 46px 1fr 32px", alignItems: "center", gap: 6, cursor: rationale ? "help" : "default" }}
                 onMouseEnter={() => rationale && setTooltip(`${slot}-${attr}`)}
                 onMouseLeave={() => setTooltip(null)}
               >
-                <span style={{ fontSize: 13, textAlign: "center" }}>{icon}</span>
+                <AttrIcon size={13} strokeWidth={1.8} style={{ color: "rgba(0,200,180,0.55)" }} />
                 <span style={{ fontFamily: "var(--font-saira)", fontWeight: 900, color: "rgba(255,255,255,0.7)", letterSpacing: "0.07em", fontSize: 9, textTransform: "uppercase" }}>{lbl}</span>
                 <div style={{ height: 14, background: "rgba(0,0,0,0.3)", borderRadius: 5, overflow: "hidden", border: "1.5px solid rgba(0,200,180,0.15)" }}>
                   <div className={statColor(v)} style={{ height: "100%", borderRadius: 4, width: pct + "%" }} />
@@ -375,13 +385,13 @@ function Dashboard({ simCount, unlockedDrivers, boostPoints, runsUntilSenna, onQ
       display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 12,
     }}>
       {[
-        { label: "Simulations Run", val: simCount.toString(), icon: "🔁" },
-        { label: "Drivers Unlocked", val: `${13 - 1 + unlockedDrivers.length} / 13`, icon: "🏆" },
-        { label: "Boost Points", val: boostPoints.toString(), icon: "⚡" },
-        { label: "Senna Status", val: runsUntilSenna === 0 ? "UNLOCKED 🟢" : `${runsUntilSenna} runs left`, icon: "🔒" },
-      ].map(({ label, val, icon }) => (
+        { label: "Simulations Run",  val: simCount.toString(),                                           Icon: RefreshCw },
+        { label: "Drivers Unlocked", val: `${12 + unlockedDrivers.length} / 13`,                       Icon: Trophy },
+        { label: "Boost Points",     val: boostPoints.toString(),                                       Icon: Zap },
+        { label: "Senna Status",     val: runsUntilSenna === 0 ? "UNLOCKED" : `${runsUntilSenna} left`, Icon: Lock },
+      ].map(({ label, val, Icon: DashIcon }) => (
         <div key={label} style={{ textAlign: "center" }}>
-          <div style={{ fontSize: 20, marginBottom: 4 }}>{icon}</div>
+          <DashIcon size={18} strokeWidth={1.8} style={{ color: "rgba(0,200,180,0.6)", marginBottom: 4 }} />
           <div style={{ fontFamily: "var(--font-archivo-narrow)", fontWeight: 800, fontSize: 20, color: "#00c8b4" }}>{val}</div>
           <div style={{ fontFamily: "var(--font-jetbrains)", fontSize: 8, color: "rgba(255,255,255,0.35)", textTransform: "uppercase", letterSpacing: "0.12em", marginTop: 2 }}>{label}</div>
         </div>
@@ -394,8 +404,11 @@ function Dashboard({ simCount, unlockedDrivers, boostPoints, runsUntilSenna, onQ
           letterSpacing: "0.12em", textTransform: "uppercase", cursor: "pointer",
           transition: "all 0.18s",
         }}>
-          📝 Take Quiz<br />
-          <span style={{ fontSize: 8, color: "rgba(0,200,180,0.6)" }}>Earn boost points</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 6, justifyContent: "center" }}>
+            <BookOpen size={11} strokeWidth={2} />
+            <span>Take Quiz</span>
+          </div>
+          <span style={{ fontSize: 8, color: "rgba(0,200,180,0.6)", display: "block", marginTop: 3 }}>Earn boost points</span>
         </button>
       </div>
     </div>

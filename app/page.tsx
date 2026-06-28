@@ -6,12 +6,13 @@ import Nav from "@/components/Nav";
 import AuthModal from "@/components/AuthModal";
 import { BentoGrid, type BentoItem } from "@/components/BentoGrid";
 import { CTAWithRectangle } from "@/components/CTAWithRectangle";
+import { Trophy, MessageSquare, BookOpen, Users, Gauge, Flag, Settings, Clock, Lock, Shield, Mail, Zap, AlertTriangle, Filter, Car, Code2, BarChart2, Lightbulb } from "@/components/Icons";
 
 const BENTO_ITEMS: BentoItem[] = [
   {
     id: "goat",
     href: "/goat-simulator",
-    title: "🐐 GOAT Simulator",
+    title: "GOAT Simulator",
     description: "Run 100,000 simulated races. Pick two legends and settle the GOAT debate with data.",
     accentColor: "#f87171",
     borderColor: "rgba(232,48,58,0.2)",
@@ -44,7 +45,7 @@ const BENTO_ITEMS: BentoItem[] = [
   {
     id: "discuss",
     href: "/comments",
-    title: "💬 Discussion Board",
+    title: "Discussion Board",
     description: "F1's most passionate fans, one place. No algorithm — just hot takes.",
     accentColor: "#34d399",
     borderColor: "rgba(52,211,153,0.18)",
@@ -68,7 +69,7 @@ const BENTO_ITEMS: BentoItem[] = [
   {
     id: "guide",
     href: "/f1-guide",
-    title: "🏎 F1 Beginner's Guide",
+    title: "F1 Beginner's Guide",
     description: "From zero to fanatic. Rules, strategy, history — everything explained simply.",
     accentColor: "#818cf8",
     borderColor: "rgba(129,140,248,0.2)",
@@ -76,9 +77,15 @@ const BENTO_ITEMS: BentoItem[] = [
     cta: "Start Learning",
     body: (
       <div>
-        {["🚦 How the Points System Works", "🏁 Flags, Pit Stops & Safety Cars", "🛞 Race Strategy Explained", "📅 History of Formula 1"].map(t => (
-          <div key={t} style={{ display: "flex", alignItems: "center", gap: 8, padding: "7px 0", borderBottom: "1px solid rgba(129,140,248,0.1)" }}>
-            <span style={{ fontFamily: "var(--font-inter)", fontWeight: 600, fontSize: 14, color: "rgba(165,180,252,0.9)" }}>{t}</span>
+        {[
+          { Icon: Gauge,    text: "How the Points System Works" },
+          { Icon: Flag,     text: "Flags, Pit Stops & Safety Cars" },
+          { Icon: Settings, text: "Race Strategy Explained" },
+          { Icon: Clock,    text: "History of Formula 1" },
+        ].map(({ Icon, text }) => (
+          <div key={text} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 0", borderBottom: "1px solid rgba(129,140,248,0.08)" }}>
+            <Icon size={14} strokeWidth={2} style={{ color: "rgba(129,140,248,0.7)", flexShrink: 0 }} />
+            <span style={{ fontFamily: "var(--font-inter)", fontWeight: 500, fontSize: 13, color: "rgba(165,180,252,0.85)" }}>{text}</span>
           </div>
         ))}
       </div>
@@ -87,7 +94,7 @@ const BENTO_ITEMS: BentoItem[] = [
   {
     id: "drivers",
     href: "/know-your-drivers",
-    title: "⚡ Know Your Drivers",
+    title: "Know Your Drivers",
     description: "19 legendary drivers — Fangio to Verstappen. Stats, bios, ratings, iconic quotes.",
     accentColor: "#fcd34d",
     borderColor: "rgba(252,211,77,0.18)",
@@ -186,14 +193,14 @@ export default function AboutPage() {
                       <div style={{ fontFamily: "var(--font-jetbrains)", fontWeight: 800, fontSize: 10, letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(255,255,255,0.35)", marginBottom: 6 }}>TELEMETRY</div>
                       <div style={{ display: "grid", gap: 10 }}>
                         {[
-                          { icon: "🏎", lbl: "F1 Fan Since", bar: 90, fill: "fill-blue", val: "2016", valColor: "#818cf8" },
-                          { icon: "🐐", lbl: "GOAT Pick", bar: 100, fill: "fill-red", val: "Senna", valColor: "#f87171" },
-                          { icon: "💻", lbl: "Dev Skill", bar: 85, fill: "fill-green", val: "85", valColor: "#34d399" },
-                          { icon: "📊", lbl: "Stats Nerd", bar: 95, fill: "fill-yellow", val: "95", valColor: "#fcd34d" },
-                          { icon: "🏁", lbl: "Races Watched", bar: 88, fill: "fill-purple", val: "500+", valColor: "#d0bfff" },
+                          { Icon: Car,      lbl: "F1 Fan Since",   bar: 90, fill: "fill-blue",   val: "2016", valColor: "#818cf8" },
+                          { Icon: Trophy,   lbl: "GOAT Pick",      bar: 100, fill: "fill-red",   val: "Senna", valColor: "#f87171" },
+                          { Icon: Code2,    lbl: "Dev Skill",      bar: 85, fill: "fill-green",  val: "85",   valColor: "#34d399" },
+                          { Icon: BarChart2, lbl: "Stats Nerd",    bar: 95, fill: "fill-yellow", val: "95",   valColor: "#fcd34d" },
+                          { Icon: Flag,     lbl: "Races Watched",  bar: 88, fill: "fill-purple", val: "500+", valColor: "#d0bfff" },
                         ].map(s => (
                           <div key={s.lbl} style={{ display: "grid", gridTemplateColumns: "18px 86px 1fr 32px", alignItems: "center", gap: 8 }}>
-                            <span style={{ fontSize: 13, textAlign: "center" }}>{s.icon}</span>
+                            <s.Icon size={13} strokeWidth={2} style={{ color: "rgba(255,255,255,0.45)" }} />
                             <span style={{ fontFamily: "var(--font-jetbrains)", fontWeight: 800, color: "#fff", letterSpacing: "0.07em", fontSize: 10, textTransform: "uppercase" }}>{s.lbl}</span>
                             <div style={{ height: 8, background: "rgba(0,0,0,0.35)", borderRadius: 99, overflow: "hidden", border: "1.5px solid rgba(255,255,255,0.08)" }}>
                               <div className={s.fill} style={{ height: "100%", borderRadius: 99, width: s.bar + "%" }} />
@@ -214,13 +221,13 @@ export default function AboutPage() {
                   <div style={{ fontFamily: "var(--font-jetbrains)", fontWeight: 700, fontSize: 10, textTransform: "uppercase", letterSpacing: "0.18em", color: "rgba(255,255,255,0.38)", marginBottom: 16, borderBottom: "1px solid rgba(255,255,255,0.07)", paddingBottom: 8 }}>QUICK FACTS</div>
                   <div style={{ display: "grid", gap: 8 }}>
                     {[
-                      { icon: "🏎", text: "Started watching F1 in 2016 — hooked from the first overtake." },
-                      { icon: "🐐", text: "GOAT take: Senna was faster than the car itself." },
-                      { icon: "💡", text: "Built this entire site to settle debates with actual data." },
-                      { icon: "🏁", text: "Favourite race: 2019 German GP. Chaos. Pure chaos." },
+                      { Icon: Car,        text: "Started watching F1 in 2016 — hooked from the first overtake." },
+                      { Icon: Trophy,     text: "GOAT take: Senna was faster than the car itself." },
+                      { Icon: Lightbulb,  text: "Built this entire site to settle debates with actual data." },
+                      { Icon: Flag,       text: "Favourite race: 2019 German GP. Chaos. Pure chaos." },
                     ].map((f, i) => (
                       <div key={i} style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 14, padding: "10px 14px", display: "flex", alignItems: "flex-start", gap: 10 }}>
-                        <span style={{ fontSize: 15, flexShrink: 0, marginTop: 2 }}>{f.icon}</span>
+                        <f.Icon size={15} strokeWidth={2} style={{ color: "rgba(255,255,255,0.4)", flexShrink: 0, marginTop: 2 }} />
                         <span style={{ fontFamily: "var(--font-inter)", fontWeight: 600, fontSize: 13, color: "rgba(255,255,255,0.78)", lineHeight: 1.5 }}>{f.text}</span>
                       </div>
                     ))}
@@ -270,15 +277,15 @@ export default function AboutPage() {
             <SectionLabel>PRIVACY & TRUST</SectionLabel>
             <div className="privacy-grid">
               {[
-                { icon: "🔒", title: "No data sold. Ever.", desc: "Your email and profile are never shared or monetised." },
-                { icon: "🛡️", title: "Firebase Auth", desc: "Industry-standard authentication. Passwords are never stored in plain text." },
-                { icon: "✉️", title: "Email verification", desc: "New accounts require email verification before commenting." },
-                { icon: "⚡", title: "Session-only auth", desc: "Sessions expire when you close the browser tab." },
-                { icon: "🚦", title: "Rate limiting", desc: "Comments are rate-limited to prevent spam and abuse." },
-                { icon: "🧹", title: "Input sanitisation", desc: "All user input is sanitised before storage." },
+                { Icon: Lock,          title: "No data sold. Ever.",  desc: "Your email and profile are never shared or monetised." },
+                { Icon: Shield,        title: "Firebase Auth",        desc: "Industry-standard authentication. Passwords are never stored in plain text." },
+                { Icon: Mail,          title: "Email verification",   desc: "New accounts require email verification before commenting." },
+                { Icon: Zap,           title: "Session-only auth",    desc: "Sessions expire when you close the browser tab." },
+                { Icon: AlertTriangle, title: "Rate limiting",        desc: "Comments are rate-limited to prevent spam and abuse." },
+                { Icon: Filter,        title: "Input sanitisation",   desc: "All user input is sanitised before storage." },
               ].map(item => (
                 <div key={item.title} style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderTopColor: "rgba(255,255,255,0.14)", borderRadius: 18, padding: "16px 18px" }}>
-                  <div style={{ fontSize: 20, marginBottom: 8 }}>{item.icon}</div>
+                  <item.Icon size={18} strokeWidth={1.8} style={{ color: "rgba(0,200,180,0.65)", marginBottom: 8 }} />
                   <div style={{ fontFamily: "var(--font-archivo-narrow)", fontWeight: 800, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.05em", color: "#fff", marginBottom: 6 }}>{item.title}</div>
                   <div style={{ fontFamily: "var(--font-inter)", fontSize: 12, color: "rgba(255,255,255,0.5)", lineHeight: 1.6 }}>{item.desc}</div>
                 </div>
@@ -292,8 +299,8 @@ export default function AboutPage() {
             title="Settle the GOAT Debate Once and For All"
             description="100,000 simulated races. 19 legendary drivers. One community. The data doesn't lie."
             actions={[
-              { text: "▶ Run the Simulation", href: "/goat-simulator", variant: "primary" },
-              { text: "⚡ Know Your Drivers", href: "/know-your-drivers", variant: "secondary" },
+              { text: "Run the Simulation", href: "/goat-simulator", variant: "primary" },
+              { text: "Know Your Drivers", href: "/know-your-drivers", variant: "secondary" },
             ]}
             className="cta-rect-wrap"
           />
