@@ -21,7 +21,7 @@ const orbitron     = Orbitron({ variable: "--font-orbitron", subsets: ["latin"],
 export const metadata: Metadata = {
   title: "The F1 Project — GOAT Debates, Driver Profiles & Beginner Guides",
   description: "Explore F1 history, debate the GOAT, discover legendary drivers and learn the sport with The F1 Project.",
-  icons: { icon: "/favicon-32.png", apple: "/favicon-192.png" },
+  icons: { icon: "/Charles_Flavicon.jpeg", apple: "/Charles_Flavicon.jpeg" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
