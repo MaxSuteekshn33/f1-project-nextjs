@@ -34,4 +34,6 @@ export {
   Clock,
   Star,
   Settings,
+  ChevronDown,
+  LogIn,
 } from "lucide-react";

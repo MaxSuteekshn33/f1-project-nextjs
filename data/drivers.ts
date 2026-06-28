@@ -317,5 +317,22 @@ export const DRIVERS: Driver[] = [
 ];
 
 export const GOAT_DRIVERS = DRIVERS.filter(d =>
-  ["senna","schumacher","hamilton","verstappen","prost","alonso","clark","fangio","lauda","vettel","hakkinen","mansell","raikkonen"].includes(d.key)
+  ["senna","schumacher","hamilton","verstappen","prost","alonso","clark","fangio","lauda","vettel","hakkinen","mansell","raikkonen","leclerc","button","stewart","moss","villeneuve"].includes(d.key)
 );
+
+// 8 drivers that must be unlocked by running simulations
+export const LOCKED_DRIVER_KEYS = new Set([
+  "verstappen","senna","leclerc","clark","fangio","lauda","stewart","button"
+]);
+
+// Unlock order: each key unlocks after this many total simulations
+export const UNLOCK_THRESHOLDS: Record<string, number> = {
+  lauda:      3,
+  clark:      6,
+  fangio:     9,
+  stewart:    12,
+  button:     15,
+  leclerc:    18,
+  senna:      21,
+  verstappen: 24,
+};
