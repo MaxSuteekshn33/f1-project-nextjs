@@ -339,7 +339,7 @@ function DriverPick({
           return (
             <div key={lbl} style={{ position: "relative" }}>
               <div
-                style={{ display: "grid", gridTemplateColumns: "18px 46px 1fr 32px", alignItems: "center", gap: 6, cursor: rationale ? "help" : "default" }}
+                style={{ display: "grid", gridTemplateColumns: "18px minmax(0,80px) 1fr 32px", alignItems: "center", gap: 6, cursor: rationale ? "help" : "default" }}
                 onMouseEnter={() => rationale && setTooltip(`${slot}-${attr}`)}
                 onMouseLeave={() => setTooltip(null)}
               >
