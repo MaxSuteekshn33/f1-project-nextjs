@@ -116,7 +116,8 @@
     overflow-x: hidden;
   }
   /* Typography scale — 16px base (avoids iOS auto-zoom) */
-  p, li, span { font-size: 1rem; }
+  /* NOTE: span deliberately excluded — spans inside headings must inherit the heading's font-size */
+  p, li { font-size: 1rem; }
   /* Truncation: prefer wrap, use ellipsis only as fallback */
   .truncate-safe {
     overflow: hidden;
@@ -223,8 +224,11 @@
 
 /* ─── Neon Text Glow (use sparingly) ────────────────────── */
 /* UI UX Pro: 1-2 glowing elements max per view */
-.neon-text-teal { text-shadow: 0 0 20px rgba(0,200,180,0.6), 0 0 40px rgba(0,200,180,0.2); }
-.neon-text-red  { text-shadow: 0 0 20px rgba(232,48,58,0.6), 0 0 40px rgba(232,48,58,0.2); }
+/* font-size/font-family must be explicit — Tailwind preflight can reset inline elements */
+.neon-text-teal { text-shadow: 0 0 20px rgba(0,200,180,0.6), 0 0 40px rgba(0,200,180,0.2); font-size: inherit; font-family: inherit; }
+.neon-text-red  { text-shadow: 0 0 20px rgba(232,48,58,0.6), 0 0 40px rgba(232,48,58,0.2); font-size: inherit; font-family: inherit; }
+/* Spans inside headings must always inherit — covers pages that use plain spans without a class */
+h1 span, h2 span, h3 span { font-size: inherit; font-family: inherit; font-weight: inherit; }
 
 /* ─── Orbitron Hero — Cyberpunk HUD headings ───────────── */
 .hero-heading {

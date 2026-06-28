@@ -100,6 +100,7 @@ const BENTO_ITEMS: BentoItem[] = [
     borderColor: "rgba(252,211,77,0.18)",
     bg: "rgba(245,158,11,0.07)",
     cta: "Explore Drivers",
+    className: "wide",
     body: (
       <div>
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10 }}>
@@ -236,6 +237,33 @@ export default function AboutPage() {
                 </div>
               )}
             </div>
+          </div>
+
+          {/* LinkedIn CTA */}
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 48, marginTop: -12 }}>
+            <a
+              href="https://www.linkedin.com/in/suteekshn-mahajan-443226172?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "inline-flex", alignItems: "center", gap: 12,
+                background: "linear-gradient(135deg,rgba(10,102,194,0.18),rgba(10,102,194,0.08))",
+                border: "1px solid rgba(10,102,194,0.45)",
+                borderRadius: 16, padding: "14px 28px",
+                textDecoration: "none",
+                transition: "all 0.2s",
+                boxShadow: "0 4px 20px rgba(10,102,194,0.2)",
+              }}
+            >
+              {/* LinkedIn logo SVG */}
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="#0a66c2">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
+              <div>
+                <div style={{ fontFamily: "var(--font-archivo)", fontWeight: 900, fontSize: 14, color: "#fff", letterSpacing: "0.02em" }}>Connect with Suteekshn</div>
+                <div style={{ fontFamily: "var(--font-jetbrains)", fontSize: 9, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(10,102,194,0.9)", marginTop: 2 }}>LinkedIn Profile →</div>
+              </div>
+            </a>
           </div>
 
           {/* About section */}
