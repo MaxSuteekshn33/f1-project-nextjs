@@ -6108,37 +6108,60 @@ document.getElementById('era-btn').addEventListener('click', function(){
   };
   window.closeDashboard = () => { document.getElementById('dashboard-modal').style.display = 'none'; };
 
+  // ── Auth error codes → friendly messages ──
+  function friendlyAuthError(code, rawMsg) {
+    const map = {
+      'auth/invalid-email':          'Please enter a valid email address.',
+      'auth/user-not-found':         'Incorrect email or password.',
+      'auth/wrong-password':         'Incorrect email or password.',
+      'auth/invalid-credential':     'Incorrect email or password.',
+      'auth/email-already-in-use':   'An account already exists. Try signing in instead.',
+      'auth/weak-password':          'Password must be at least 6 characters.',
+      'auth/too-many-requests':      'Too many attempts. Please wait a few minutes and try again.',
+      'auth/network-request-failed': 'Network error. Check your connection and try again.',
+      'auth/popup-closed-by-user':   'Sign in was cancelled.',
+      'auth/popup-blocked':          'Popup was blocked by your browser. Please allow popups for this site and try again.',
+      'auth/cancelled-popup-request':'Sign in was cancelled.',
+      'auth/unauthorized-domain':    'This domain is not authorised for sign in. Please contact the site owner.',
+      'auth/operation-not-allowed':  'Google sign-in is not enabled. Please use email/password.',
+      'auth/user-disabled':          'This account has been disabled.',
+    };
+    if (map[code]) return map[code];
+    if (code) return 'Sign-in error (' + code + '). Please try again.';
+    return rawMsg || 'Something went wrong. Please try again.';
+  }
+  function showAuthError(code, rawMsg) {
+    const el = document.getElementById('auth-error');
+    el.style.display = 'block';
+    el.textContent = friendlyAuthError(code, rawMsg);
+  }
+
   // ── Auth actions ──
   window.signInWithGoogle = async () => {
     try {
       await signInWithPopup(auth, new GoogleAuthProvider());
       closeAuthModal();
-    } catch(e) { showAuthError(e.message); }
+    } catch(e) { showAuthError(e.code, e.message); }
   };
   window.signUpEmail = async () => {
     const email = document.getElementById('auth-email').value;
-    const pass = document.getElementById('auth-password').value;
-    const name = document.getElementById('auth-name').value;
+    const pass  = document.getElementById('auth-password').value;
+    const name  = document.getElementById('auth-name').value;
     try {
       const cred = await createUserWithEmailAndPassword(auth, email, pass);
       if (name) await updateProfile(cred.user, { displayName: name });
       closeAuthModal();
-    } catch(e) { showAuthError(e.message); }
+    } catch(e) { showAuthError(e.code, e.message); }
   };
   window.signInEmail = async () => {
     const email = document.getElementById('auth-email').value;
-    const pass = document.getElementById('auth-password').value;
+    const pass  = document.getElementById('auth-password').value;
     try {
       await signInWithEmailAndPassword(auth, email, pass);
       closeAuthModal();
-    } catch(e) { showAuthError(e.message); }
+    } catch(e) { showAuthError(e.code, e.message); }
   };
   window.signOutUser = async () => { await signOut(auth); };
-  function showAuthError(msg) {
-    const el = document.getElementById('auth-error');
-    el.style.display = 'block';
-    el.textContent = msg.replace('Firebase: ','').replace(/\(auth.*\)/,'');
-  }
 
   // ── Save simulation result ──
   window.fbTrackSim = async (winnerName) => {
