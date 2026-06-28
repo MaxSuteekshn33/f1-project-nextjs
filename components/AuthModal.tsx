@@ -7,19 +7,30 @@ import {
 } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 
-function friendlyAuthError(code: string): string {
+function friendlyAuthError(code: string, rawMessage?: string): string {
   const map: Record<string, string> = {
-    "auth/invalid-email":          "Please enter a valid email address.",
-    "auth/user-not-found":         "Incorrect email or password.",
-    "auth/wrong-password":         "Incorrect email or password.",
-    "auth/invalid-credential":     "Incorrect email or password.",
-    "auth/email-already-in-use":   "An account already exists. Try signing in instead.",
-    "auth/weak-password":          "Password must be at least 6 characters.",
-    "auth/too-many-requests":      "Too many attempts. Please wait a few minutes and try again.",
-    "auth/network-request-failed": "Network error. Check your connection and try again.",
-    "auth/popup-closed-by-user":   "Sign in was cancelled.",
+    "auth/invalid-email":               "Please enter a valid email address.",
+    "auth/user-not-found":              "Incorrect email or password.",
+    "auth/wrong-password":              "Incorrect email or password.",
+    "auth/invalid-credential":          "Incorrect email or password.",
+    "auth/email-already-in-use":        "An account already exists. Try signing in instead.",
+    "auth/weak-password":               "Password must be at least 6 characters.",
+    "auth/too-many-requests":           "Too many attempts. Please wait a few minutes and try again.",
+    "auth/network-request-failed":      "Network error. Check your connection and try again.",
+    "auth/popup-closed-by-user":        "Sign in was cancelled.",
+    "auth/popup-blocked":               "Popup was blocked by your browser. Please allow popups for this site and try again.",
+    "auth/cancelled-popup-request":     "Sign in was cancelled.",
+    "auth/unauthorized-domain":         "This domain isn't authorised for sign in. Please contact the site owner.",
+    "auth/operation-not-allowed":       "Google sign-in is not enabled. Please use email/password.",
+    "auth/internal-error":              "An internal error occurred. Please try again.",
+    "auth/user-disabled":               "This account has been disabled.",
+    "auth/account-exists-with-different-credential": "An account already exists with this email using a different sign-in method.",
   };
-  return map[code] || "Something went wrong. Please try again.";
+  if (map[code]) return map[code];
+  // Show the raw code in dev so we can diagnose unknown errors
+  if (code) return `Sign-in error (${code}). Please try again.`;
+  if (rawMessage) return rawMessage;
+  return "Something went wrong. Please try again.";
 }
 
 interface Props {
@@ -48,7 +59,7 @@ export default function AuthModal({ open, onClose }: Props) {
       onClose();
     } catch (e: unknown) {
       const err = e as { code?: string; message?: string };
-      setError(friendlyAuthError(err.code || ""));
+      setError(friendlyAuthError(err.code || "", err.message));
     } finally { setLoading(false); }
   };
 
