@@ -1,11 +1,5 @@
 "use client";
 
-/**
- * Adapted from kokonutd/bento-grid (kokonutui.com)
- * Asymmetric grid layout with CSS entrance animations + Framer Motion hover effects.
- */
-
-import { motion } from "motion/react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
@@ -19,152 +13,222 @@ export interface BentoItem {
   accentColor: string;
   borderColor: string;
   bg: string;
+  neonClass?: string;  // e.g. "neon-red", "neon-teal"
   className?: string;
   body: React.ReactNode;
 }
 
-interface Props {
-  items: BentoItem[];
-}
+interface Props { items: BentoItem[] }
 
 export function BentoGrid({ items }: Props) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
-    // Slight delay so CSS transition is visible
-    const t = setTimeout(() => setMounted(true), 50);
+    const t = setTimeout(() => setMounted(true), 60);
     return () => clearTimeout(t);
   }, []);
 
   return (
-    <div className="bento-grid">
-      {items.map((item, i) => (
-        <BentoCard key={item.id} item={item} index={i} mounted={mounted} />
-      ))}
+    <>
+      <div className="bento-grid">
+        {items.map((item, i) => (
+          <BentoCard key={item.id} item={item} index={i} mounted={mounted} />
+        ))}
+      </div>
       <style>{`
         .bento-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 20px;
+          gap: 16px;
         }
-        .bento-card-wide { grid-column: span 2; }
-        .bento-card-enter {
+        .bento-wide { grid-column: span 2; }
+
+        /* Stagger entrance */
+        .bento-enter {
           opacity: 0;
-          transform: translateY(24px);
-          transition: opacity 0.5s ease, transform 0.5s ease;
+          transform: translateY(20px);
+          transition: opacity 0.45s var(--ease-out), transform 0.45s var(--ease-out);
         }
-        .bento-card-enter.visible {
-          opacity: 1;
-          transform: translateY(0);
-        }
-        .bento-card-inner {
+        .bento-enter.visible { opacity: 1; transform: translateY(0); }
+
+        /* Card base — glass surface */
+        .bento-link {
           display: flex;
           flex-direction: column;
-          border-radius: 28px;
+          border-radius: 24px;
           overflow: hidden;
           text-decoration: none;
           position: relative;
-          transition: transform 0.22s ease, box-shadow 0.22s ease;
+          height: 100%;
+          /* Glass */
+          background: rgba(255,255,255,0.05);
+          backdrop-filter: blur(40px) saturate(180%);
+          -webkit-backdrop-filter: blur(40px) saturate(180%);
+          border: 1px solid rgba(255,255,255,0.10);
+          border-top-color: rgba(255,255,255,0.18);
+          box-shadow: 0 8px 32px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.10);
+          /* Transition — UI UX Pro: 220ms ease-out */
+          transition:
+            transform 220ms cubic-bezier(0.16,1,0.3,1),
+            box-shadow 220ms cubic-bezier(0.16,1,0.3,1),
+            border-color 220ms ease;
         }
-        .bento-card-inner:hover {
-          transform: translateY(-8px) !important;
-          box-shadow: 0 20px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.14) !important;
+
+        /* Neon accent bar at top */
+        .bento-link::before {
+          content: "";
+          position: absolute;
+          top: 0; left: 0; right: 0; height: 2px;
+          background: var(--bento-neon, rgba(255,255,255,0.15));
+          opacity: 0.7;
+          transition: opacity 220ms ease;
+          z-index: 2;
         }
-        .bento-glow {
+
+        /* Hover: lift + neon glow — cyberpunk F1 feel */
+        .bento-link:hover {
+          transform: translateY(-6px) scale(1.005);
+          border-color: rgba(255,255,255,0.20);
+          box-shadow:
+            0 0 0 1px var(--bento-neon, rgba(0,200,180,0.4)),
+            0 16px 56px rgba(0,0,0,0.65),
+            0 0 40px color-mix(in srgb, var(--bento-neon, #00c8b4) 18%, transparent),
+            inset 0 1px 0 rgba(255,255,255,0.18);
+        }
+        .bento-link:hover::before { opacity: 1; }
+
+        /* Arrow animation */
+        .bento-arrow {
+          font-size: 15px;
+          color: rgba(255,255,255,0.28);
+          transition: transform 180ms ease, color 180ms ease;
+          display: inline-block;
+          line-height: 1;
+        }
+        .bento-link:hover .bento-arrow {
+          transform: translateX(5px);
+          color: rgba(255,255,255,0.80);
+        }
+
+        /* Hover radial glow overlay */
+        .bento-glow-overlay {
           position: absolute;
           inset: 0;
-          border-radius: 28px;
+          border-radius: 24px;
           opacity: 0;
           pointer-events: none;
-          transition: opacity 0.25s ease;
+          transition: opacity 220ms ease;
+          z-index: 0;
         }
-        .bento-card-inner:hover .bento-glow { opacity: 1; }
-        .bento-arrow {
-          font-size: 16px;
-          color: rgba(255,255,255,0.35);
-          transition: transform 0.18s ease, color 0.18s ease;
-          display: inline-block;
-        }
-        .bento-card-inner:hover .bento-arrow {
-          transform: translateX(6px);
-          color: rgba(255,255,255,0.85);
-        }
+        .bento-link:hover .bento-glow-overlay { opacity: 1; }
+
+        /* Responsive */
         @media (max-width: 680px) {
           .bento-grid { grid-template-columns: 1fr; }
-          .bento-card-wide { grid-column: span 1; }
+          .bento-wide { grid-column: span 1; }
         }
       `}</style>
-    </div>
+    </>
   );
 }
 
 function BentoCard({ item, index, mounted }: { item: BentoItem; index: number; mounted: boolean }) {
   const isWide = item.className?.includes("wide");
-  const delay = index * 0.1;
+  const delay  = index * 0.08;
 
   return (
     <div
-      className={cn("bento-card-enter", mounted ? "visible" : "", isWide ? "bento-card-wide" : "")}
-      style={{ transitionDelay: `${delay}s`, minHeight: isWide ? 260 : 340 }}
+      className={cn("bento-enter", mounted ? "visible" : "", isWide ? "bento-wide" : "")}
+      style={{
+        transitionDelay: `${delay}s`,
+        minHeight: isWide ? 240 : 320,
+      }}
     >
       <Link
         href={item.href}
-        className="bento-card-inner"
+        className="bento-link"
         style={{
-          minHeight: "100%",
-          background: item.bg,
-          backdropFilter: "blur(40px) saturate(160%)",
-          WebkitBackdropFilter: "blur(40px) saturate(160%)",
-          border: `1px solid ${item.borderColor}`,
-          boxShadow: "0 8px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08)",
-        }}
+          /* Pass neon colour as CSS var for ::before and hover glow */
+          "--bento-neon": item.accentColor,
+        } as React.CSSProperties}
       >
-        {/* Header */}
-        <div style={{ padding: "26px 26px 10px", display: "flex", alignItems: "center", gap: 12 }}>
-          <span style={{
-            fontFamily: "var(--font-archivo-narrow)", fontWeight: 700,
-            fontSize: 20, textTransform: "uppercase", letterSpacing: "0.05em",
-            color: item.accentColor,
+        {/* Radial glow on hover */}
+        <div
+          className="bento-glow-overlay"
+          style={{ background: `radial-gradient(ellipse 80% 50% at 50% 0%, ${item.accentColor}20 0%, transparent 70%)` }}
+        />
+
+        {/* Accent chip + title */}
+        <div style={{ padding: "22px 24px 8px", position: "relative", zIndex: 1 }}>
+          {/* Minimalist chip — accent colour tag replacing emoji */}
+          <div style={{
+            display: "inline-flex", alignItems: "center", gap: 6,
+            background: `${item.accentColor}18`,
+            border: `1px solid ${item.accentColor}35`,
+            borderRadius: 99, padding: "3px 10px", marginBottom: 10,
           }}>
-            {item.title}
-          </span>
+            <span style={{ width: 6, height: 6, borderRadius: "50%", background: item.accentColor, display: "block", flexShrink: 0, boxShadow: `0 0 6px ${item.accentColor}` }} />
+            <span style={{
+              fontFamily: "var(--font-jetbrains)", fontWeight: 600,
+              fontSize: 9, letterSpacing: "0.18em", textTransform: "uppercase",
+              color: item.accentColor,
+            }}>
+              {item.id.replace(/-/g, " ")}
+            </span>
+          </div>
+
+          <div style={{
+            fontFamily: "var(--font-archivo-narrow)", fontWeight: 800,
+            fontSize: "clamp(16px, 2.2vw, 20px)",
+            textTransform: "uppercase", letterSpacing: "0.03em",
+            color: "#ffffff",
+            /* Prevent text overflow */
+            overflow: "hidden",
+            display: "-webkit-box",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
+          }}>
+            {/* Strip emojis — text only, colour conveys identity */}
+            {item.title.replace(/[\u{1F300}-\u{1FAFF}]/gu, "").trim()}
+          </div>
         </div>
 
-        {/* Description */}
+        {/* Description — minimalist, capped line-length */}
         <p style={{
-          padding: "0 26px 16px",
-          fontFamily: "var(--font-inter)", fontWeight: 500,
-          fontSize: 15, color: "rgba(255,255,255,0.6)", lineHeight: 1.6,
-          margin: 0,
+          padding: "0 24px 14px",
+          fontFamily: "var(--font-inter)", fontWeight: 400,
+          fontSize: 14, color: "rgba(255,255,255,0.55)", lineHeight: 1.65,
+          margin: 0, position: "relative", zIndex: 1,
+          /* UI UX Pro: line-length 35-60 chars on mobile */
+          maxWidth: "52ch",
+          overflow: "hidden",
+          display: "-webkit-box",
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: "vertical",
         }}>
           {item.description}
         </p>
 
         {/* Body slot */}
-        <div style={{ flex: 1, padding: "0 26px 20px" }}>
+        <div style={{ flex: 1, padding: "0 24px 18px", position: "relative", zIndex: 1, overflow: "hidden" }}>
           {item.body}
         </div>
 
         {/* CTA footer */}
         <div style={{
-          padding: "16px 26px",
+          padding: "14px 24px",
           display: "flex", alignItems: "center", justifyContent: "space-between",
-          borderTop: "1px solid rgba(255,255,255,0.07)", marginTop: "auto",
+          borderTop: "1px solid rgba(255,255,255,0.06)",
+          marginTop: "auto", position: "relative", zIndex: 1,
         }}>
           <span style={{
-            fontFamily: "var(--font-jetbrains)", fontWeight: 600, fontSize: 12,
-            letterSpacing: "0.18em", textTransform: "uppercase",
-            color: "rgba(255,255,255,0.45)",
+            fontFamily: "var(--font-jetbrains)", fontWeight: 600, fontSize: 11,
+            letterSpacing: "0.16em", textTransform: "uppercase",
+            color: "rgba(255,255,255,0.38)",
           }}>
             {item.cta}
           </span>
           <span className="bento-arrow">→</span>
         </div>
-
-        {/* Hover glow overlay (CSS) */}
-        <div
-          className="bento-glow"
-          style={{ background: `radial-gradient(ellipse at 50% 0%, ${item.accentColor}22 0%, transparent 60%)` }}
-        />
       </Link>
     </div>
   );

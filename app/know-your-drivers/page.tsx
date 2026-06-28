@@ -140,8 +140,8 @@ export default function KnowYourDriversPage() {
         </div>
       )}
 
-      <div style={{ paddingTop: 64, position: "relative", zIndex: 1 }}>
-        <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, background: "radial-gradient(ellipse 700px 600px at -5% -5%, rgba(92,45,145,0.4) 0%, transparent 60%)" }} />
+      <div className="page-content">
+        <div className="ambient-bg" />
 
         <div style={{ maxWidth: 980, margin: "0 auto", padding: "40px 24px 80px", position: "relative", zIndex: 2 }}>
 

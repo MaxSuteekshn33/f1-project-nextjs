@@ -128,7 +128,7 @@ export default function AboutPage() {
       <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} />
 
       <div style={{ paddingTop: 64, position: "relative", zIndex: 1 }}>
-        <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, background: "radial-gradient(ellipse 800px 700px at -5% -5%, rgba(92,45,145,0.45) 0%, transparent 60%), radial-gradient(ellipse 600px 600px at 108% 8%, rgba(185,28,28,0.38) 0%, transparent 60%)" }} />
+        <div className="ambient-bg" />
 
         <div style={{ maxWidth: 920, margin: "0 auto", padding: "40px 24px 80px", position: "relative", zIndex: 2 }}>
 
@@ -136,8 +136,8 @@ export default function AboutPage() {
             <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.18)", borderRadius: 99, padding: "5px 16px", marginBottom: 16, fontFamily: "var(--font-jetbrains)", fontWeight: 500, fontSize: 10, letterSpacing: "0.2em", color: "rgba(255,255,255,0.55)", textTransform: "uppercase" }}>
               Formula 1 · Decoded & Debated
             </div>
-            <h1 style={{ fontFamily: "var(--font-archivo-narrow)", fontWeight: 800, fontSize: "clamp(40px, 8vw, 68px)", lineHeight: 1, letterSpacing: "-0.03em", textTransform: "uppercase", color: "#ffffff" }}>
-              THE <span style={{ color: "#e8303a" }}>F1</span> PROJECT
+            <h1 className="hero-heading" style={{ fontSize: "clamp(36px, 7vw, 72px)", color: "#ffffff" }}>
+              THE <span style={{ color: "#e8303a" }} className="neon-text-red">F1</span> PROJECT
             </h1>
             <div style={{ color: "rgba(255,255,255,0.35)", fontSize: 12, marginTop: 14, fontFamily: "var(--font-jetbrains)", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" }}>
               GOAT Debates · Driver Profiles · Beginner Guides · Community
@@ -307,7 +307,8 @@ export default function AboutPage() {
 
       <style>{`
         @keyframes flipPulse { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(180deg)} }
-        .card-front-grid { display:grid; grid-template-columns:200px 1fr; min-height:340px; }
+        /* Fix: use minmax so column never overflows */
+        .card-front-grid { display:grid; grid-template-columns:minmax(0,180px) minmax(0,1fr); min-height:320px; }
         .stats-strip { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:40px; }
         .privacy-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
         .cta-rect-wrap { max-width:700px; margin:0 auto 60px; border-radius:20px; }

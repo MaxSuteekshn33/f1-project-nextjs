@@ -51,8 +51,8 @@ export default function F1GuidePage() {
       <Nav onLoginClick={() => setAuthOpen(true)} />
       <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} />
 
-      <div style={{ paddingTop: 64, position: "relative", zIndex: 1 }}>
-        <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, background: "radial-gradient(ellipse 800px 700px at -5% -5%, rgba(92,45,145,0.45) 0%, transparent 60%), radial-gradient(ellipse 600px 600px at 108% 8%, rgba(185,28,28,0.38) 0%, transparent 60%)" }} />
+      <div className="page-content">
+        <div className="ambient-bg" />
 
         <div style={{ maxWidth: 920, margin: "0 auto", padding: "40px 24px 80px", position: "relative", zIndex: 2 }}>
 

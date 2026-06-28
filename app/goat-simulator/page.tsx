@@ -464,16 +464,16 @@ export default function GoatSimulator() {
       {quizOpen && <QuizModal onClose={() => setQuizOpen(false)} onPass={handleQuizPass} />}
       {lockedDriver && <LockModal driver={lockedDriver} runsLeft={sim.runsUntilSenna} onClose={() => setLockedDriver(null)} />}
 
-      <div style={{ paddingTop: 64, position: "relative", zIndex: 1 }}>
-        <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, background: "radial-gradient(ellipse 700px 600px at -5% -5%, rgba(92,45,145,0.4) 0%, transparent 60%), radial-gradient(ellipse 600px 500px at 108% 8%, rgba(185,28,28,0.35) 0%, transparent 60%)" }} />
+      <div className="page-content">
+        <div className="ambient-bg" />
 
-        <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 24px 80px", position: "relative", zIndex: 2 }}>
+        <div className="page-inner">
 
           {/* Header */}
           <header style={{ textAlign: "center", marginBottom: 26 }}>
             <div style={{ fontFamily: "var(--font-saira)", fontWeight: 600, fontSize: 11, letterSpacing: "0.32em", color: "rgba(255,255,255,0.45)", textTransform: "uppercase", marginBottom: 10 }}>100,000 Race Simulation Engine</div>
-            <h1 style={{ fontFamily: "var(--font-archivo)", fontWeight: 900, fontSize: "clamp(38px,9vw,76px)", lineHeight: 0.92, letterSpacing: "-0.02em", textTransform: "uppercase", color: "#fff" }}>
-              <span style={{ color: "#e8303a" }}>GOAT</span> SIMULATOR
+            <h1 className="hero-heading" style={{ fontSize: "clamp(32px, 8vw, 72px)", color: "#fff" }}>
+              <span style={{ color: "#e8303a" }} className="neon-text-red">GOAT</span>{" "}SIMULATOR
             </h1>
             <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 14, marginTop: 10, fontFamily: "var(--font-saira)", fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase" }}>
               WHO REALLY IS THE GREATEST? · HOVER STATS FOR RATIONALE

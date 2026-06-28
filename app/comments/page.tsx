@@ -130,7 +130,7 @@ export default function CommentsPage() {
       <Nav onLoginClick={() => setAuthOpen(true)} />
       <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} />
 
-      <div style={{ paddingTop: 64, position: "relative", zIndex: 1 }}>
+      <div className="page-content">
         <div style={{ maxWidth: 720, margin: "0 auto", padding: "40px 20px 80px" }}>
 
           <h1 style={{ fontFamily: "var(--font-archivo)", fontSize: "clamp(24px,5vw,36px)", fontWeight: 900, color: "#fff", marginBottom: 6 }}>Discussion Board</h1>
