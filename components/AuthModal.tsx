@@ -4,7 +4,6 @@ import { useState } from "react";
 import {
   signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword,
   signInWithEmailAndPassword, updateProfile, sendEmailVerification,
-  setPersistence, browserSessionPersistence,
 } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 
@@ -40,13 +39,11 @@ export default function AuthModal({ open, onClose }: Props) {
 
   const clearErr = () => setError("");
 
-  const ensureSessionPersistence = () =>
-    setPersistence(auth, browserSessionPersistence).catch(() => {});
-
   const signInGoogle = async () => {
     setLoading(true); clearErr();
     try {
-      await ensureSessionPersistence();
+      // signInWithPopup must be called synchronously in the click handler —
+      // no awaits before it or the browser blocks the popup.
       await signInWithPopup(auth, new GoogleAuthProvider());
       onClose();
     } catch (e: unknown) {
@@ -58,7 +55,6 @@ export default function AuthModal({ open, onClose }: Props) {
   const signInEmail = async () => {
     setLoading(true); clearErr();
     try {
-      await ensureSessionPersistence();
       await signInWithEmailAndPassword(auth, email, password);
       onClose();
     } catch (e: unknown) {
@@ -72,7 +68,6 @@ export default function AuthModal({ open, onClose }: Props) {
     if (!name.trim()) { setError("Please enter a display name."); setLoading(false); return; }
     if (password.length < 6) { setError("Password must be at least 6 characters."); setLoading(false); return; }
     try {
-      await ensureSessionPersistence();
       const cred = await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(cred.user, { displayName: name.trim() });
       await sendEmailVerification(cred.user);
