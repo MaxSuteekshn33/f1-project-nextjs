@@ -1,7 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  async redirects() {
+    return [
+      {
+        source: "/goat-simulator",
+        destination: "/goat-simulator-classic.html",
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
