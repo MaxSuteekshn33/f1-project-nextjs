@@ -8,6 +8,7 @@ import { BentoGrid, type BentoItem } from "@/components/BentoGrid";
 import { CTAWithRectangle } from "@/components/CTAWithRectangle";
 import { Trophy, MessageSquare, BookOpen, Users, Gauge, Flag, Settings, Clock, Lock, Shield, Mail, Zap, AlertTriangle, Filter, Car, Code2, BarChart2, Lightbulb } from "@/components/Icons";
 import { TimelineContent } from "@/components/ui/timeline-animation";
+import IntroVideo from "@/components/IntroVideo";
 
 const BENTO_ITEMS: BentoItem[] = [
   {
@@ -132,6 +133,7 @@ export default function AboutPage() {
 
   return (
     <>
+      <IntroVideo />
       <div className="dotted-surface" />
       <Nav onLoginClick={() => setAuthOpen(true)} />
       <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} />
