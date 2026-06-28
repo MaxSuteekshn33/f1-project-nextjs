@@ -1,65 +1,344 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useState } from "react";
+import Link from "next/link";
+import Nav from "@/components/Nav";
+import AuthModal from "@/components/AuthModal";
+import { BentoGrid, type BentoItem } from "@/components/BentoGrid";
+import { CTAWithRectangle } from "@/components/CTAWithRectangle";
+
+const BENTO_ITEMS: BentoItem[] = [
+  {
+    id: "goat",
+    href: "/goat-simulator",
+    title: "🐐 GOAT Simulator",
+    description: "Run 100,000 simulated races. Pick two legends and settle the GOAT debate with data.",
+    accentColor: "#f87171",
+    borderColor: "rgba(232,48,58,0.2)",
+    bg: "rgba(232,48,58,0.08)",
+    cta: "Run the Simulation",
+    className: "wide",
+    body: (
+      <div style={{ display: "grid", gap: 8 }}>
+        {[
+          { label: "Pace", fill: 99, cls: "fill-red", val: "99", valColor: "#f87171" },
+          { label: "Wet Mastery", fill: 100, cls: "fill-blue", val: "100", valColor: "#818cf8" },
+          { label: "Racecraft", fill: 95, cls: "fill-yellow", val: "95", valColor: "#fcd34d" },
+        ].map(s => (
+          <div key={s.label} style={{ display: "grid", gridTemplateColumns: "110px 1fr 36px", alignItems: "center", gap: 6 }}>
+            <span style={{ fontFamily: "var(--font-jetbrains)", fontWeight: 600, fontSize: 12, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(255,255,255,0.6)" }}>{s.label}</span>
+            <div style={{ height: 7, background: "rgba(255,255,255,0.12)", borderRadius: 99, overflow: "hidden" }}>
+              <div className={s.cls} style={{ height: "100%", borderRadius: 99, width: s.fill + "%" }} />
+            </div>
+            <span style={{ fontFamily: "var(--font-jetbrains)", fontSize: 14, fontWeight: 700, color: s.valColor, textAlign: "right" }}>{s.val}</span>
+          </div>
+        ))}
+        <div style={{ display: "flex", gap: 8, marginTop: 6, flexWrap: "wrap" }}>
+          {["🇧🇷 Senna #12", "🇩🇪 Schumacher #1", "🇬🇧 Hamilton #44"].map(tag => (
+            <div key={tag} style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(232,48,58,0.1)", border: "1px solid rgba(232,48,58,0.22)", borderRadius: 99, padding: "4px 12px", fontFamily: "var(--font-archivo-narrow)", fontWeight: 700, fontSize: 13, color: "#f87171" }}>{tag}</div>
+          ))}
+        </div>
+      </div>
+    ),
+  },
+  {
+    id: "discuss",
+    href: "/comments",
+    title: "💬 Discussion Board",
+    description: "F1's most passionate fans, one place. No algorithm — just hot takes.",
+    accentColor: "#34d399",
+    borderColor: "rgba(52,211,153,0.18)",
+    bg: "rgba(16,185,129,0.07)",
+    cta: "Join the Debate",
+    body: (
+      <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+        {[
+          { user: "SENNA_FAN_1994", text: "Senna in 2024 machinery? 25 wins minimum 🐐" },
+          { user: "SCHUMI_ERA", text: "Schumi dominated FOR YEARS. That never repeats." },
+          { user: "MAX33_FAN", text: "19 wins in one season. The debate is over." },
+        ].map(c => (
+          <div key={c.user} style={{ background: "rgba(52,211,153,0.07)", border: "1px solid rgba(52,211,153,0.15)", borderRadius: 10, padding: "7px 12px" }}>
+            <div style={{ fontFamily: "var(--font-jetbrains)", fontWeight: 500, fontSize: 8, letterSpacing: "0.12em", textTransform: "uppercase", color: "#34d399", marginBottom: 3 }}>{c.user}</div>
+            <div style={{ fontFamily: "var(--font-inter)", fontWeight: 500, fontSize: 13, color: "rgba(255,255,255,0.8)", lineHeight: 1.5 }}>{c.text}</div>
+          </div>
+        ))}
+      </div>
+    ),
+  },
+  {
+    id: "guide",
+    href: "/f1-guide",
+    title: "🏎 F1 Beginner's Guide",
+    description: "From zero to fanatic. Rules, strategy, history — everything explained simply.",
+    accentColor: "#818cf8",
+    borderColor: "rgba(129,140,248,0.2)",
+    bg: "rgba(99,102,241,0.08)",
+    cta: "Start Learning",
+    body: (
+      <div>
+        {["🚦 How the Points System Works", "🏁 Flags, Pit Stops & Safety Cars", "🛞 Race Strategy Explained", "📅 History of Formula 1"].map(t => (
+          <div key={t} style={{ display: "flex", alignItems: "center", gap: 8, padding: "7px 0", borderBottom: "1px solid rgba(129,140,248,0.1)" }}>
+            <span style={{ fontFamily: "var(--font-inter)", fontWeight: 600, fontSize: 14, color: "rgba(165,180,252,0.9)" }}>{t}</span>
+          </div>
+        ))}
+      </div>
+    ),
+  },
+  {
+    id: "drivers",
+    href: "/know-your-drivers",
+    title: "⚡ Know Your Drivers",
+    description: "19 legendary drivers — Fangio to Verstappen. Stats, bios, ratings, iconic quotes.",
+    accentColor: "#fcd34d",
+    borderColor: "rgba(252,211,77,0.18)",
+    bg: "rgba(245,158,11,0.07)",
+    cta: "Explore Drivers",
+    body: (
+      <div>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10 }}>
+          <div style={{ width: 52, height: 52, borderRadius: 14, overflow: "hidden", border: "1px solid rgba(252,211,77,0.25)", flexShrink: 0 }}>
+            <img src="/drivers/hamilton.jpg" alt="Hamilton" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top" }} />
+          </div>
+          <div>
+            <div style={{ fontFamily: "var(--font-archivo-narrow)", fontWeight: 800, fontSize: 19, textTransform: "uppercase", color: "#fcd34d", lineHeight: 1.1 }}>Hamilton</div>
+            <div style={{ fontFamily: "var(--font-jetbrains)", fontWeight: 500, fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.45)", marginTop: 3 }}>Modern Era · 🇬🇧</div>
+          </div>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
+          {[{ num: "7", lbl: "Titles" }, { num: "103", lbl: "Wins" }, { num: "104", lbl: "Poles" }, { num: "35%", lbl: "Win Rate" }].map(s => (
+            <div key={s.lbl} style={{ background: "rgba(252,211,77,0.08)", border: "1px solid rgba(252,211,77,0.18)", borderRadius: 12, padding: "6px 8px", textAlign: "center" }}>
+              <div style={{ fontFamily: "var(--font-jetbrains)", fontWeight: 700, fontSize: 20, color: "#fcd34d", lineHeight: 1 }}>{s.num}</div>
+              <div style={{ fontFamily: "var(--font-jetbrains)", fontWeight: 600, fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.45)", marginTop: 2 }}>{s.lbl}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    ),
+  },
+];
+
+export default function AboutPage() {
+  const [authOpen, setAuthOpen] = useState(false);
+  const [cardFlipped, setCardFlipped] = useState(false);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <>
+      <div className="dotted-surface" />
+      <Nav onLoginClick={() => setAuthOpen(true)} />
+      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} />
+
+      <div style={{ paddingTop: 64, position: "relative", zIndex: 1 }}>
+        <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, background: "radial-gradient(ellipse 800px 700px at -5% -5%, rgba(92,45,145,0.45) 0%, transparent 60%), radial-gradient(ellipse 600px 600px at 108% 8%, rgba(185,28,28,0.38) 0%, transparent 60%)" }} />
+
+        <div style={{ maxWidth: 920, margin: "0 auto", padding: "40px 24px 80px", position: "relative", zIndex: 2 }}>
+
+          <header style={{ textAlign: "center", marginBottom: 52, paddingTop: 8 }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.18)", borderRadius: 99, padding: "5px 16px", marginBottom: 16, fontFamily: "var(--font-jetbrains)", fontWeight: 500, fontSize: 10, letterSpacing: "0.2em", color: "rgba(255,255,255,0.55)", textTransform: "uppercase" }}>
+              Formula 1 · Decoded & Debated
+            </div>
+            <h1 style={{ fontFamily: "var(--font-archivo-narrow)", fontWeight: 800, fontSize: "clamp(40px, 8vw, 68px)", lineHeight: 1, letterSpacing: "-0.03em", textTransform: "uppercase", color: "#ffffff" }}>
+              THE <span style={{ color: "#e8303a" }}>F1</span> PROJECT
+            </h1>
+            <div style={{ color: "rgba(255,255,255,0.35)", fontSize: 12, marginTop: 14, fontFamily: "var(--font-jetbrains)", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" }}>
+              GOAT Debates · Driver Profiles · Beginner Guides · Community
+            </div>
+          </header>
+
+          {/* Feature Cards — Bento Grid */}
+          <section style={{ marginBottom: 60 }}>
+            <BentoGrid items={BENTO_ITEMS} />
+          </section>
+
+          {/* Creator Card */}
+          <div style={{ fontFamily: "var(--font-jetbrains)", fontWeight: 800, fontSize: 11, letterSpacing: "0.25em", textTransform: "uppercase", color: "rgba(255,255,255,0.32)", marginBottom: 28, display: "flex", alignItems: "center", gap: 14 }}>
+            <span style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.07)", display: "block" }} />
+            ABOUT THE CREATOR
+            <span style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.07)", display: "block" }} />
+          </div>
+
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 48 }}>
+            <div onClick={() => setCardFlipped(!cardFlipped)} style={{
+              width: "min(720px, 100%)", cursor: "pointer",
+              background: "rgba(255,255,255,0.06)", backdropFilter: "blur(60px) saturate(180%)",
+              WebkitBackdropFilter: "blur(60px) saturate(180%)",
+              border: "1px solid rgba(255,255,255,0.12)", borderTopColor: "rgba(255,255,255,0.22)",
+              borderRadius: 28, overflow: "hidden",
+              boxShadow: "0 8px 48px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.14)",
+            }}>
+              {!cardFlipped ? (
+                <div className="card-front-grid">
+                  <div style={{ padding: "28px 20px 24px", borderRight: "1px solid rgba(255,255,255,0.08)", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", background: "rgba(255,255,255,0.04)" }}>
+                    <div style={{ width: 120, height: 120, borderRadius: "50%", overflow: "hidden", border: "3px solid rgba(177,151,252,0.6)", boxShadow: "0 0 24px rgba(177,151,252,0.3), 0 0 0 6px rgba(177,151,252,0.08)", marginBottom: 14 }}>
+                      <img src="/SuteekshnPic.jpeg" alt="Suteekshn" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }} />
+                    </div>
+                    <div style={{ fontFamily: "var(--font-archivo-narrow)", fontWeight: 900, fontSize: 18, textTransform: "uppercase", letterSpacing: "0.02em", color: "#fff", lineHeight: 1.1, marginBottom: 4 }}>Suteekshn</div>
+                    <div style={{ fontFamily: "var(--font-jetbrains)", fontWeight: 700, fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(0,220,200,0.9)", marginBottom: 16 }}>CREATOR · DEV · F1 FAN</div>
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 16, padding: "12px 14px", width: "100%", marginTop: "auto" }}>
+                      <div style={{ width: 48, height: 48, borderRadius: 12, overflow: "hidden", border: "1px solid rgba(177,151,252,0.3)" }}>
+                        <img src="/HIPPOS.jpeg" alt="Hippos" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      </div>
+                      <div style={{ fontFamily: "var(--font-archivo-narrow)", fontWeight: 800, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.08em", color: "#fff" }}>HIPPOS</div>
+                      <div style={{ fontFamily: "var(--font-saira)", fontWeight: 800, fontSize: 9, letterSpacing: "0.12em", color: "rgba(0,200,180,0.6)", textTransform: "uppercase" }}>ESPORTS ORG</div>
+                    </div>
+                  </div>
+                  <div style={{ padding: "24px 24px 22px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                    <div>
+                      <div style={{ fontFamily: "var(--font-jetbrains)", fontWeight: 800, fontSize: 10, letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(255,255,255,0.35)", marginBottom: 6 }}>TELEMETRY</div>
+                      <div style={{ display: "grid", gap: 10 }}>
+                        {[
+                          { icon: "🏎", lbl: "F1 Fan Since", bar: 90, fill: "fill-blue", val: "2016", valColor: "#818cf8" },
+                          { icon: "🐐", lbl: "GOAT Pick", bar: 100, fill: "fill-red", val: "Senna", valColor: "#f87171" },
+                          { icon: "💻", lbl: "Dev Skill", bar: 85, fill: "fill-green", val: "85", valColor: "#34d399" },
+                          { icon: "📊", lbl: "Stats Nerd", bar: 95, fill: "fill-yellow", val: "95", valColor: "#fcd34d" },
+                          { icon: "🏁", lbl: "Races Watched", bar: 88, fill: "fill-purple", val: "500+", valColor: "#d0bfff" },
+                        ].map(s => (
+                          <div key={s.lbl} style={{ display: "grid", gridTemplateColumns: "18px 86px 1fr 32px", alignItems: "center", gap: 8 }}>
+                            <span style={{ fontSize: 13, textAlign: "center" }}>{s.icon}</span>
+                            <span style={{ fontFamily: "var(--font-jetbrains)", fontWeight: 800, color: "#fff", letterSpacing: "0.07em", fontSize: 10, textTransform: "uppercase" }}>{s.lbl}</span>
+                            <div style={{ height: 8, background: "rgba(0,0,0,0.35)", borderRadius: 99, overflow: "hidden", border: "1.5px solid rgba(255,255,255,0.08)" }}>
+                              <div className={s.fill} style={{ height: "100%", borderRadius: 99, width: s.bar + "%" }} />
+                            </div>
+                            <span style={{ fontFamily: "var(--font-jetbrains)", fontSize: 13, fontWeight: 800, textAlign: "right", color: s.valColor }}>{s.val}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div style={{ textAlign: "center", marginTop: 18, fontFamily: "var(--font-jetbrains)", fontWeight: 500, fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.22)", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
+                      <span style={{ fontSize: 13, display: "inline-block", animation: "flipPulse 1.6s ease-in-out infinite" }}>↻</span>
+                      FLIP FOR MORE
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div style={{ padding: "24px 22px 22px", background: "rgba(255,255,255,0.04)" }}>
+                  <div style={{ fontFamily: "var(--font-jetbrains)", fontWeight: 700, fontSize: 10, textTransform: "uppercase", letterSpacing: "0.18em", color: "rgba(255,255,255,0.38)", marginBottom: 16, borderBottom: "1px solid rgba(255,255,255,0.07)", paddingBottom: 8 }}>QUICK FACTS</div>
+                  <div style={{ display: "grid", gap: 8 }}>
+                    {[
+                      { icon: "🏎", text: "Started watching F1 in 2016 — hooked from the first overtake." },
+                      { icon: "🐐", text: "GOAT take: Senna was faster than the car itself." },
+                      { icon: "💡", text: "Built this entire site to settle debates with actual data." },
+                      { icon: "🏁", text: "Favourite race: 2019 German GP. Chaos. Pure chaos." },
+                    ].map((f, i) => (
+                      <div key={i} style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 14, padding: "10px 14px", display: "flex", alignItems: "flex-start", gap: 10 }}>
+                        <span style={{ fontSize: 15, flexShrink: 0, marginTop: 2 }}>{f.icon}</span>
+                        <span style={{ fontFamily: "var(--font-inter)", fontWeight: 600, fontSize: 13, color: "rgba(255,255,255,0.78)", lineHeight: 1.5 }}>{f.text}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{ textAlign: "center", marginTop: 16, fontFamily: "var(--font-jetbrains)", fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.28)", cursor: "pointer" }}>↩ TAP TO FLIP BACK</div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* About section */}
+          <section style={{ maxWidth: 700, margin: "0 auto 48px" }}>
+            <SectionLabel>ABOUT THE PROJECT</SectionLabel>
+            <div style={GLASS_BLOCK}>
+              <p style={{ marginBottom: 12, color: "rgba(255,255,255,0.72)" }}>The F1 Project is a <strong style={{ color: "#fff" }}>passion project</strong> built to answer one question every fan has: <em>who actually is the GOAT?</em></p>
+              <blockquote style={QUOTE_PULL}>"DATA DOESN'T LIE. NEITHER DO 100,000 SIMULATED RACES."</blockquote>
+              <p style={{ color: "rgba(255,255,255,0.72)" }}>This isn't just another fan site. It's a <strong style={{ color: "#fff" }}>simulation engine, a driver database, a community forum, and a beginner's guide</strong> — all built from scratch because the debate deserves better than a Twitter poll.</p>
+            </div>
+            <SectionLabel>WHY THIS EXISTS</SectionLabel>
+            <div style={{ display: "grid", gap: 10 }}>
+              {[
+                ["F1 debate is everywhere", "but almost no one uses real data to back their arguments"],
+                ["The GOAT question deserves", "a proper simulation, not vibes and nostalgia"],
+                ["New fans need a proper guide", "that explains F1 without dumbing it down"],
+                ["The community deserves", "a space to debate freely without an algorithm deciding what's seen"],
+              ].map(([bold, rest], i) => (
+                <div key={i} style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.08)", borderTopColor: "rgba(255,255,255,0.14)", borderRadius: 16, padding: "14px 18px", display: "flex", alignItems: "flex-start", gap: 16 }}>
+                  <span style={{ fontFamily: "var(--font-jetbrains)", fontWeight: 700, fontSize: 20, color: "#e8303a", lineHeight: 1, flexShrink: 0 }}>0{i+1}</span>
+                  <span style={{ fontFamily: "var(--font-inter)", fontWeight: 500, fontSize: 14, color: "rgba(255,255,255,0.68)", lineHeight: 1.6 }}><strong style={{ color: "#fff" }}>{bold}</strong> — {rest}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Stats */}
+          <div className="stats-strip">
+            {[{ num: "19", lbl: "Legendary Drivers" }, { num: "100K", lbl: "Race Simulations" }, { num: "10+", lbl: "F1 Guide Topics" }].map(s => (
+              <div key={s.lbl} style={{ background: "rgba(255,255,255,0.05)", backdropFilter: "blur(40px) saturate(160%)", border: "1px solid rgba(255,255,255,0.1)", borderTopColor: "rgba(255,255,255,0.2)", borderRadius: 24, padding: "24px 14px", textAlign: "center", boxShadow: "0 4px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.12)" }}>
+                <div style={{ fontFamily: "var(--font-archivo-narrow)", fontWeight: 800, fontSize: "clamp(28px,4vw,40px)", color: "#fff", lineHeight: 1, marginBottom: 6 }}>{s.num}</div>
+                <div style={{ fontFamily: "var(--font-jetbrains)", fontWeight: 600, fontSize: 9, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(255,255,255,0.38)" }}>{s.lbl}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Privacy */}
+          <section style={{ maxWidth: 700, margin: "40px auto 60px" }}>
+            <SectionLabel>PRIVACY & TRUST</SectionLabel>
+            <div className="privacy-grid">
+              {[
+                { icon: "🔒", title: "No data sold. Ever.", desc: "Your email and profile are never shared or monetised." },
+                { icon: "🛡️", title: "Firebase Auth", desc: "Industry-standard authentication. Passwords are never stored in plain text." },
+                { icon: "✉️", title: "Email verification", desc: "New accounts require email verification before commenting." },
+                { icon: "⚡", title: "Session-only auth", desc: "Sessions expire when you close the browser tab." },
+                { icon: "🚦", title: "Rate limiting", desc: "Comments are rate-limited to prevent spam and abuse." },
+                { icon: "🧹", title: "Input sanitisation", desc: "All user input is sanitised before storage." },
+              ].map(item => (
+                <div key={item.title} style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderTopColor: "rgba(255,255,255,0.14)", borderRadius: 18, padding: "16px 18px" }}>
+                  <div style={{ fontSize: 20, marginBottom: 8 }}>{item.icon}</div>
+                  <div style={{ fontFamily: "var(--font-archivo-narrow)", fontWeight: 800, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.05em", color: "#fff", marginBottom: 6 }}>{item.title}</div>
+                  <div style={{ fontFamily: "var(--font-inter)", fontSize: 12, color: "rgba(255,255,255,0.5)", lineHeight: 1.6 }}>{item.desc}</div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* CTA with Rectangle */}
+          <CTAWithRectangle
+            badge="Ready to Debate?"
+            title="Settle the GOAT Debate Once and For All"
+            description="100,000 simulated races. 19 legendary drivers. One community. The data doesn't lie."
+            actions={[
+              { text: "▶ Run the Simulation", href: "/goat-simulator", variant: "primary" },
+              { text: "⚡ Know Your Drivers", href: "/know-your-drivers", variant: "secondary" },
+            ]}
+            className="cta-rect-wrap"
+          />
+
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </div>
+
+      <footer style={{ textAlign: "center", fontFamily: "var(--font-jetbrains)", fontWeight: 500, fontSize: 10, color: "rgba(255,255,255,0.25)", letterSpacing: "0.15em", textTransform: "uppercase", padding: "28px 0 36px", borderTop: "1px solid rgba(255,255,255,0.07)", position: "relative", zIndex: 1 }}>
+        THE F1 PROJECT · BUILT WITH ♥ BY SUTEEKSHN
+      </footer>
+
+      <style>{`
+        @keyframes flipPulse { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(180deg)} }
+        .card-front-grid { display:grid; grid-template-columns:200px 1fr; min-height:340px; }
+        .stats-strip { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:40px; }
+        .privacy-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+        .cta-rect-wrap { max-width:700px; margin:0 auto 60px; border-radius:20px; }
+        .bento-card-inner:hover { transform:translateY(-8px) !important; box-shadow:0 20px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.12) !important; }
+        @media(max-width:480px) { .stats-strip { grid-template-columns:1fr !important; } .card-front-grid { grid-template-columns:1fr !important; } .privacy-grid { grid-template-columns:1fr !important; } }
+      `}</style>
+    </>
+  );
+}
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <div style={{ fontFamily: "var(--font-jetbrains)", fontWeight: 800, fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.32)", marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
+      {children}
+      <span style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.07)", display: "block" }} />
     </div>
   );
 }
+
+const GLASS_BLOCK: React.CSSProperties = {
+  background: "rgba(255,255,255,0.05)", backdropFilter: "blur(40px) saturate(160%)",
+  WebkitBackdropFilter: "blur(40px) saturate(160%)",
+  border: "1px solid rgba(255,255,255,0.1)", borderTopColor: "rgba(255,255,255,0.18)",
+  boxShadow: "0 4px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)",
+  borderRadius: 24, padding: "24px 28px", marginBottom: 16,
+  fontFamily: "var(--font-inter)", fontSize: 15, color: "rgba(255,255,255,0.72)",
+  fontWeight: 500, lineHeight: 1.7,
+};
+const QUOTE_PULL: React.CSSProperties = {
+  display: "block", fontFamily: "var(--font-archivo-narrow)", fontWeight: 800,
+  fontSize: "clamp(15px,2.2vw,19px)", color: "rgba(255,255,255,0.92)",
+  letterSpacing: "0.01em", textTransform: "uppercase",
+  borderLeft: "3px solid #e8303a", paddingLeft: 16, margin: "20px 0", lineHeight: 1.3,
+};
