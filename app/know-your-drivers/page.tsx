@@ -6,6 +6,7 @@ import AuthModal from "@/components/AuthModal";
 import { DRIVERS, Driver } from "@/data/drivers";
 import Link from "next/link";
 import { Gauge, Zap, Flag, Cloud, RotateCw, TrendingUp, Trophy, Calendar } from "@/components/Icons";
+import ExpandDriverCards from "@/components/ui/expand-cards";
 
 const ERAS = [
   { key: "all", label: "All Eras" },
@@ -172,35 +173,28 @@ export default function KnowYourDriversPage() {
             ))}
           </div>
 
-          {/* Driver Grid */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: 14 }}>
-            {filtered.map(drv => (
-              <div key={drv.key} onClick={() => setSelected(drv)} style={{
-                background: "linear-gradient(160deg,#0e2a2a 0%,#0d2137 100%)",
-                border: "1px solid rgba(0,200,180,0.2)", borderRadius: 20, overflow: "hidden",
-                cursor: "pointer", transition: "transform 0.2s ease, box-shadow 0.2s ease",
-                boxShadow: "0 4px 20px rgba(0,0,0,0.4), 0 0 20px rgba(0,200,180,0.06)",
-                display: "flex", flexDirection: "column",
-              }} className="driver-card-hover">
-                <div style={{ height: 140, overflow: "hidden", position: "relative", background: "rgba(255,255,255,0.04)" }}>
-                  <img src={drv.photo} alt={drv.name} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", display: "block" }} onError={e => (e.currentTarget.style.display = "none")} />
-                </div>
-                <div style={{ height: 4, background: drv.teamColor }} />
-                <div style={{ padding: "10px 12px 14px" }}>
-                  <div style={{ fontFamily: "var(--font-archivo)", fontWeight: 900, fontSize: 15, color: "#fff", lineHeight: 1.1, marginBottom: 2 }}>
-                    {drv.name.split(" ").pop()}
-                    <br />
-                    <span style={{ fontSize: 10, color: "rgba(255,255,255,0.45)", fontFamily: "var(--font-saira)", fontWeight: 600, letterSpacing: 0 }}>{drv.name.split(" ").slice(0, -1).join(" ")}</span>
-                  </div>
-                  <div style={{ fontFamily: "var(--font-jetbrains)", fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(0,200,180,0.7)", marginBottom: 6 }}>{drv.team.split("·")[0].trim()}</div>
-                  <div style={{ fontFamily: "var(--font-jetbrains)", fontSize: 9, color: "rgba(255,255,255,0.45)", letterSpacing: "0.06em" }}>
-                    {drv.titles > 0 ? `${drv.titles} Championship${drv.titles > 1 ? "s" : ""}` : `${drv.wins} Race Wins`}
-                  </div>
-                  <div style={{ fontFamily: "var(--font-jetbrains)", fontSize: 8, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(255,255,255,0.25)", marginTop: 4 }}>{drv.era.toUpperCase()} · {drv.peak}</div>
-                </div>
-              </div>
-            ))}
-          </div>
+          {/* Expand-on-hover driver cards */}
+          <ExpandDriverCards
+            cards={filtered.map(d => ({
+              id: d.key,
+              photo: d.photo,
+              name: d.name,
+              team: d.team,
+              teamColor: d.teamColor,
+              era: d.era,
+              titles: d.titles,
+              wins: d.wins,
+              peak: d.peak,
+              pace: d.pace,
+              quali: d.quali,
+              racecraft: d.racecraft,
+            }))}
+            defaultExpanded={filtered[0]?.key}
+            onSelect={key => {
+              const drv = filtered.find(d => d.key === key);
+              if (drv) setSelected(drv);
+            }}
+          />
 
         </div>
       </div>
