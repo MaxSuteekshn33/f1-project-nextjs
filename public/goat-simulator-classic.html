@@ -2130,7 +2130,7 @@
     </div>
     <!-- Link -->
     <div style="margin:10px 20px 0;display:flex;gap:8px;align-items:center;">
-      <div style="flex:1;background:#f5f5f5;border-radius:8px;padding:10px 12px;font-family:'Space Mono',monospace;font-size:11px;color:#444;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">maxsuteekshn33.github.io/f1-project/goat-simulator.html</div>
+      <div style="flex:1;background:#f5f5f5;border-radius:8px;padding:10px 12px;font-family:'Space Mono',monospace;font-size:11px;color:#444;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">f1-project-nextjs.vercel.app/goat-simulator</div>
       <button id="share-copy-link" onclick="copyShareLink()" style="background:#0a0a0a;color:#fff;border:none;border-radius:8px;padding:10px 14px;font-family:'Archivo',sans-serif;font-weight:800;font-size:11px;cursor:pointer;white-space:nowrap;">Copy Link</button>
     </div>
     <!-- Share button -->
@@ -5747,7 +5747,7 @@ async function buildShareCanvas(r){
   );
 
   /* ── QR code + CTA — top-right quadrant (above the photo boxes) ── */
-  const siteUrl = 'https://maxsuteekshn33.github.io/f1-project/goat-simulator.html';
+  const siteUrl = 'https://f1-project-nextjs.vercel.app/goat-simulator';
   const qrSize  = 96;
   const qrX     = W - 44 - qrSize;          /* flush with right margin */
   const qrY     = 100;                        /* sits in the empty top-right area */
@@ -5887,7 +5887,7 @@ window.closeShareModal = () => {
 };
 
 window.copyShareLink = () => {
-  const url = 'https://maxsuteekshn33.github.io/f1-project/goat-simulator.html';
+  const url = 'https://f1-project-nextjs.vercel.app/goat-simulator';
   navigator.clipboard.writeText(url).then(() => {
     const btn = document.getElementById('share-copy-link');
     btn.textContent = 'Copied ✓';
