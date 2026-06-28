@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
+import { ProgressiveBlur } from "@/components/ui/progressive-blur";
+import { TimelineContent } from "@/components/ui/timeline-animation";
 
 export interface BentoItem {
   id: string;
@@ -136,7 +138,9 @@ function BentoCard({ item, index, mounted }: { item: BentoItem; index: number; m
   const delay  = index * 0.08;
 
   return (
-    <div
+    <TimelineContent
+      as="div"
+      animationNum={index}
       className={cn("bento-enter", mounted ? "visible" : "", isWide ? "bento-wide" : "")}
       style={{
         transitionDelay: `${delay}s`,
@@ -208,9 +212,16 @@ function BentoCard({ item, index, mounted }: { item: BentoItem; index: number; m
           {item.description}
         </p>
 
-        {/* Body slot */}
+        {/* Body slot with progressive blur fade at bottom */}
         <div style={{ flex: 1, padding: "0 24px 18px", position: "relative", zIndex: 1, overflow: "hidden" }}>
           {item.body}
+          <ProgressiveBlur
+            className="pointer-events-none absolute bottom-0 left-0 w-full"
+            direction="bottom"
+            blurIntensity={0.4}
+            blurLayers={6}
+            style={{ height: "40%", opacity: 0.7 }}
+          />
         </div>
 
         {/* CTA footer */}
@@ -230,6 +241,6 @@ function BentoCard({ item, index, mounted }: { item: BentoItem; index: number; m
           <span className="bento-arrow">→</span>
         </div>
       </Link>
-    </div>
+    </TimelineContent>
   );
 }

@@ -7,6 +7,7 @@ import AuthModal from "@/components/AuthModal";
 import { BentoGrid, type BentoItem } from "@/components/BentoGrid";
 import { CTAWithRectangle } from "@/components/CTAWithRectangle";
 import { Trophy, MessageSquare, BookOpen, Users, Gauge, Flag, Settings, Clock, Lock, Shield, Mail, Zap, AlertTriangle, Filter, Car, Code2, BarChart2, Lightbulb } from "@/components/Icons";
+import { TimelineContent } from "@/components/ui/timeline-animation";
 
 const BENTO_ITEMS: BentoItem[] = [
   {
@@ -141,15 +142,15 @@ export default function AboutPage() {
         <div style={{ maxWidth: 920, margin: "0 auto", padding: "40px 24px 80px", position: "relative", zIndex: 2 }}>
 
           <header style={{ textAlign: "center", marginBottom: 52, paddingTop: 8 }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.18)", borderRadius: 99, padding: "5px 16px", marginBottom: 16, fontFamily: "var(--font-jetbrains)", fontWeight: 500, fontSize: 10, letterSpacing: "0.2em", color: "rgba(255,255,255,0.55)", textTransform: "uppercase" }}>
+            <TimelineContent as="div" animationNum={0} style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.18)", borderRadius: 99, padding: "5px 16px", marginBottom: 16, fontFamily: "var(--font-jetbrains)", fontWeight: 500, fontSize: 10, letterSpacing: "0.2em", color: "rgba(255,255,255,0.55)", textTransform: "uppercase" }}>
               Formula 1 · Decoded & Debated
-            </div>
-            <h1 className="hero-heading" style={{ fontSize: "clamp(36px, 7vw, 72px)", color: "#ffffff" }}>
+            </TimelineContent>
+            <TimelineContent as="h1" animationNum={1} className="hero-heading" style={{ fontSize: "clamp(36px, 7vw, 72px)", color: "#ffffff" }}>
               THE <span style={{ color: "#e8303a" }} className="neon-text-red">F1</span> PROJECT
-            </h1>
-            <div style={{ color: "rgba(255,255,255,0.35)", fontSize: 12, marginTop: 14, fontFamily: "var(--font-jetbrains)", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" }}>
+            </TimelineContent>
+            <TimelineContent as="div" animationNum={2} style={{ color: "rgba(255,255,255,0.35)", fontSize: 12, marginTop: 14, fontFamily: "var(--font-jetbrains)", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" }}>
               GOAT Debates · Driver Profiles · Beginner Guides · Community
-            </div>
+            </TimelineContent>
           </header>
 
           {/* Feature Cards — Bento Grid */}
@@ -158,13 +159,13 @@ export default function AboutPage() {
           </section>
 
           {/* Creator Card */}
-          <div style={{ fontFamily: "var(--font-jetbrains)", fontWeight: 800, fontSize: 11, letterSpacing: "0.25em", textTransform: "uppercase", color: "rgba(255,255,255,0.32)", marginBottom: 28, display: "flex", alignItems: "center", gap: 14 }}>
+          <TimelineContent as="div" animationNum={0} style={{ fontFamily: "var(--font-jetbrains)", fontWeight: 800, fontSize: 11, letterSpacing: "0.25em", textTransform: "uppercase", color: "rgba(255,255,255,0.32)", marginBottom: 28, display: "flex", alignItems: "center", gap: 14 }}>
             <span style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.07)", display: "block" }} />
             ABOUT THE CREATOR
             <span style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.07)", display: "block" }} />
-          </div>
+          </TimelineContent>
 
-          <div style={{ display: "flex", justifyContent: "center", marginBottom: 48 }}>
+          <TimelineContent as="div" animationNum={1} style={{ display: "flex", justifyContent: "center", marginBottom: 48 }}>
             <div onClick={() => setCardFlipped(!cardFlipped)} style={{
               width: "min(720px, 100%)", cursor: "pointer",
               background: "rgba(255,255,255,0.06)", backdropFilter: "blur(60px) saturate(180%)",
@@ -237,10 +238,10 @@ export default function AboutPage() {
                 </div>
               )}
             </div>
-          </div>
+          </TimelineContent>
 
           {/* LinkedIn CTA */}
-          <div style={{ display: "flex", justifyContent: "center", marginBottom: 48, marginTop: -12 }}>
+          <TimelineContent as="div" animationNum={2} style={{ display: "flex", justifyContent: "center", marginBottom: 48, marginTop: -12 }}>
             <a
               href="https://www.linkedin.com/in/suteekshn-mahajan-443226172?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app"
               target="_blank"
@@ -264,10 +265,10 @@ export default function AboutPage() {
                 <div style={{ fontFamily: "var(--font-jetbrains)", fontSize: 9, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(10,102,194,0.9)", marginTop: 2 }}>LinkedIn Profile →</div>
               </div>
             </a>
-          </div>
+          </TimelineContent>
 
           {/* About section */}
-          <section style={{ maxWidth: 700, margin: "0 auto 48px" }}>
+          <TimelineContent as="section" animationNum={0} style={{ maxWidth: 700, margin: "0 auto 48px" }}>
             <SectionLabel>ABOUT THE PROJECT</SectionLabel>
             <div style={GLASS_BLOCK}>
               <p style={{ marginBottom: 12, color: "rgba(255,255,255,0.72)" }}>The F1 Project is a <strong style={{ color: "#fff" }}>passion project</strong> built to answer one question every fan has: <em>who actually is the GOAT?</em></p>
@@ -288,20 +289,20 @@ export default function AboutPage() {
                 </div>
               ))}
             </div>
-          </section>
+          </TimelineContent>
 
           {/* Stats */}
-          <div className="stats-strip">
+          <TimelineContent as="div" animationNum={0} className="stats-strip">
             {[{ num: "19", lbl: "Legendary Drivers" }, { num: "100K", lbl: "Race Simulations" }, { num: "10+", lbl: "F1 Guide Topics" }].map(s => (
               <div key={s.lbl} style={{ background: "rgba(255,255,255,0.05)", backdropFilter: "blur(40px) saturate(160%)", border: "1px solid rgba(255,255,255,0.1)", borderTopColor: "rgba(255,255,255,0.2)", borderRadius: 24, padding: "24px 14px", textAlign: "center", boxShadow: "0 4px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.12)" }}>
                 <div style={{ fontFamily: "var(--font-archivo-narrow)", fontWeight: 800, fontSize: "clamp(28px,4vw,40px)", color: "#fff", lineHeight: 1, marginBottom: 6 }}>{s.num}</div>
                 <div style={{ fontFamily: "var(--font-jetbrains)", fontWeight: 600, fontSize: 9, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(255,255,255,0.38)" }}>{s.lbl}</div>
               </div>
             ))}
-          </div>
+          </TimelineContent>
 
           {/* Privacy */}
-          <section style={{ maxWidth: 700, margin: "40px auto 60px" }}>
+          <TimelineContent as="section" animationNum={0} style={{ maxWidth: 700, margin: "40px auto 60px" }}>
             <SectionLabel>PRIVACY & TRUST</SectionLabel>
             <div className="privacy-grid">
               {[
@@ -319,7 +320,7 @@ export default function AboutPage() {
                 </div>
               ))}
             </div>
-          </section>
+          </TimelineContent>
 
           {/* CTA with Rectangle */}
           <CTAWithRectangle
