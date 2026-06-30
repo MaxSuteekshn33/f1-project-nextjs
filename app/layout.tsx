@@ -18,10 +18,34 @@ const saira        = Saira({ variable: "--font-saira", subsets: ["latin"], weigh
 const spaceMono    = Space_Mono({ variable: "--font-space-mono", subsets: ["latin"], weight: ["400","700"] });
 const orbitron     = Orbitron({ variable: "--font-orbitron", subsets: ["latin"], weight: ["700","900"] });
 
+const BASE_URL = "https://f1-project-nextjs.vercel.app";
+
 export const metadata: Metadata = {
   title: "The F1 Project — GOAT Debates, Driver Profiles & Beginner Guides",
-  description: "Explore F1 history, debate the GOAT, discover legendary drivers and learn the sport with The F1 Project.",
+  description: "Simulate 100,000 F1 races. Debate the GOAT. Explore 19 legendary drivers. The F1 Project settles arguments with data.",
+  metadataBase: new URL(BASE_URL),
   icons: { icon: "/Charles_Flavicon.jpeg", apple: "/Charles_Flavicon.jpeg" },
+  openGraph: {
+    title: "The F1 Project — Who is the F1 GOAT?",
+    description: "Simulate 100,000 races between F1 legends. Senna vs Hamilton. Schumacher vs Verstappen. The data doesn't lie.",
+    url: BASE_URL,
+    siteName: "The F1 Project",
+    images: [
+      {
+        url: "/Charles_Flavicon.jpeg",
+        width: 1254,
+        height: 1254,
+        alt: "The F1 Project — Charles Leclerc",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "The F1 Project — Who is the F1 GOAT?",
+    description: "Simulate 100,000 races between F1 legends. The data doesn't lie.",
+    images: ["/Charles_Flavicon.jpeg"],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
