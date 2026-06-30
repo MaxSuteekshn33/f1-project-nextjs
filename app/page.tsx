@@ -182,14 +182,14 @@ export default function AboutPage() {
                     <div style={{ width: 120, height: 120, borderRadius: "50%", overflow: "hidden", border: "3px solid rgba(177,151,252,0.6)", boxShadow: "0 0 24px rgba(177,151,252,0.3), 0 0 0 6px rgba(177,151,252,0.08)", marginBottom: 14 }}>
                       <img src="/SuteekshnPic.jpeg" alt="Suteekshn" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }} />
                     </div>
-                    <div style={{ fontFamily: "var(--font-archivo-narrow)", fontWeight: 900, fontSize: 18, textTransform: "uppercase", letterSpacing: "0.02em", color: "#fff", lineHeight: 1.1, marginBottom: 4 }}>Suteekshn</div>
-                    <div style={{ fontFamily: "var(--font-jetbrains)", fontWeight: 700, fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(0,220,200,0.9)", marginBottom: 16 }}>CREATOR · DEV · F1 FAN</div>
+                    <div style={{ fontFamily: "var(--font-archivo-narrow)", fontWeight: 900, fontSize: 18, textTransform: "uppercase", letterSpacing: "0.02em", color: "#fff", lineHeight: 1.1, marginBottom: 4 }}>Suteekshn Mahajan</div>
+                    <div style={{ fontFamily: "var(--font-jetbrains)", fontWeight: 700, fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(0,220,200,0.9)", marginBottom: 16 }}>CREATOR · GEOPOLITICS · F1 FAN</div>
                     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 16, padding: "12px 14px", width: "100%", marginTop: "auto" }}>
                       <div style={{ width: 48, height: 48, borderRadius: 12, overflow: "hidden", border: "1px solid rgba(177,151,252,0.3)" }}>
                         <img src="/HIPPOS.jpeg" alt="Hippos" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                       </div>
                       <div style={{ fontFamily: "var(--font-archivo-narrow)", fontWeight: 800, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.08em", color: "#fff" }}>HIPPOS</div>
-                      <div style={{ fontFamily: "var(--font-saira)", fontWeight: 800, fontSize: 9, letterSpacing: "0.12em", color: "rgba(0,200,180,0.6)", textTransform: "uppercase" }}>ESPORTS ORG</div>
+                      <div style={{ fontFamily: "var(--font-saira)", fontWeight: 800, fontSize: 9, letterSpacing: "0.12em", color: "rgba(0,200,180,0.6)", textTransform: "uppercase" }}>THINK TANK CONSULTING FIRM</div>
                     </div>
                   </div>
                   <div style={{ padding: "24px 24px 22px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
