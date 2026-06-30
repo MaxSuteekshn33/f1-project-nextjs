@@ -3728,6 +3728,7 @@ function showQuizResult(){
     if(passed){
       getBoostState(boostQuizKey).completed = true;
     }
+    if(window.fbTrackQuiz) window.fbTrackQuiz(quizScore, passed ? drv.name : null);
     body.innerHTML = `
       <div class="quiz-result-box">
         <span class="qrb-emoji">${passed?'🏆':'😬'}</span>
@@ -3768,6 +3769,7 @@ function showQuizResult(){
       saveCustomBudgetCompleted(completed);
     }
     const name = CUSTOM_BUDGET_QUIZZES.find(q=>q.key===budgetQuizKey)?.label || budgetQuizKey;
+    if(window.fbTrackQuiz) window.fbTrackQuiz(quizScore, null);
     body.innerHTML = `
       <div class="quiz-result-box">
         <span class="qrb-emoji">${passed?'🏆':'😬'}</span>
@@ -3802,6 +3804,7 @@ function showQuizResult(){
   /* ── Unlock mode: standard locked-driver quiz ── */
   const drv = DRIVERS[currentQuizKey];
   if(passed) unlockDriver(currentQuizKey);
+  if(window.fbTrackQuiz) window.fbTrackQuiz(quizScore, passed ? drv.name : null);
 
   body.innerHTML = `
     <div class="quiz-result-box">
@@ -6067,7 +6070,7 @@ document.getElementById('era-btn').addEventListener('click', function(){
     }
     const driversEl = document.getElementById('dash-drivers');
     const drivers = d.driversUnlocked || [];
-    driversEl.innerHTML = drivers.length ? drivers.map(n => `<span style="background:#ffffff;border:1px solid rgba(177,151,252,.22);border-radius:20px;padding:5px 12px;font-size:12px;color:var(--ink);">🏎 ${n}</span>`).join('') : '<span style="color:var(--mute);font-size:13px;">No drivers unlocked yet — play some quizzes!</span>';
+    driversEl.innerHTML = drivers.length ? drivers.map(n => `<span style="background:#f3f0ff;border:1px solid rgba(90,26,255,.25);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;color:#4c1d95;">🏎 ${n}</span>`).join('') : '<span style="color:#6b7280;font-size:13px;">No drivers unlocked yet — play some quizzes!</span>';
     // favourite driver section
     const simsRun = d.simsRun || 0;
     const favBtn = document.getElementById('dash-set-fav-btn');
@@ -6177,7 +6180,9 @@ document.getElementById('era-btn').addEventListener('click', function(){
   window.fbTrackQuiz = async (correct, driverName) => {
     if (!currentUser) return;
     const ref = doc(db, 'users', currentUser.uid);
-    await updateDoc(ref, { quizzesTaken: increment(1), correctAnswers: increment(correct), driversUnlocked: arrayUnion(driverName) });
+    const update = { quizzesTaken: increment(1), correctAnswers: increment(correct) };
+    if (driverName) update.driversUnlocked = arrayUnion(driverName);
+    await updateDoc(ref, update);
   };
 
 </script>
